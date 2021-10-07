@@ -685,6 +685,7 @@
                     <input id="plan_user_id{{$plan}}" name="plan_user_id" type="hidden" value="{{$plan}}">
                     <input id="plan{{$plan}}" name="plan" type="hidden" value="{{$plan}}">
                     <input id="type" name="type" type="hidden" value="company">
+                    <input id="{{$planName}}" name="lookup_key" type="hidden" value="{{request('lookup_key')}}">
                     <input type="hidden" name="type" value="company">
                     <button role="button" class="button-cta button-register-company" name="company" type="submit">
                         Finaliser l'inscription

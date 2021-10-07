@@ -26,11 +26,6 @@
         </div>
     </section>
     <section class="container-home container-announcements container-create-ads">
-        <a class="link-back" href="{{route('announcements.plans')}}">
-            <button class="button-back button-cta button-draft">
-                Retour
-            </button>
-        </a>
         <div class="title-first-step-register">
             <h2 aria-level="2">Développement d'une annonce</h2>
         </div>
@@ -155,15 +150,15 @@
                             {{$errors->first('categoryAds')}}
                         </p>
                         @enderror
-                        @if(request('plan') == 1 || old('plan') == 1)
-                            <p style="font-size: .8em"><a href="{{route('announcements.plans')}}#plans">Augmenter votre
+                        @if(auth()->user()->plan_user_id == 1)
+                            <p style="font-size: .8em"><a href="{{route('usersAlready.plans')}}#plans">Augmenter votre
                                     plan</a> et
                                 vous aurez la possibilité d'en ajouter jusqu'à 3</p>
                         @endif
-                        @if(request('plan') == 2 || old('plan') == 2)
+                        @if(auth()->user()->plan_user_id == 2)
                             <p style="font-size: .8em">Vous avez la possibilité d'en intégrer jusqu'à 2</p>
                         @endif
-                        @if(request('plan') == 3 || old('plan') == 3)
+                        @if(auth()->user()->plan_user_id == 3)
                             <p style="font-size: .8em">Vous avez la possibilité d'en intégrer jusqu'à 3</p>
                         @endif
 
@@ -226,7 +221,6 @@
                     <p>Les <a href="{{route('conditions')}}">conditions d’utilisations</a> et la <a
                             href="{{route('policy')}}">politique de confidentialité</a> du site s'applique</p>
                 </div>
-                <input id="plan" name="plan" type="hidden" value="{{$plan ? $plan : old('plan')}}">
                 <div class="container-buttons-ads">
                     <div class="link-back">
                         <button class="button-back button-cta button-draft" name="is_draft">
@@ -243,13 +237,13 @@
 @endsection
 @section('scripts')
     <script src="{{asset('js/previewPicture.js')}}"></script>
-    @if(request('plan') == 1 || old('plan') == 1)
+    @if(auth()->user()->plan_user_id == 1)
         <script src="{{asset('js/checkDataMaxOptions.js')}}"></script>
     @endif
-    @if(request('plan') == 2 || old('plan') == 2)
+    @if(auth()->user()->plan_user_id == 2)
         <script src="{{asset('js/checkDataMaxOptions2.js')}}"></script>
     @endif
-    @if(request('plan') == 3 || old('plan') == 3)
+    @if(auth()->user()->plan_user_id == 3)
         <script src="{{asset('js/checkDataMaxOptions3.js')}}"></script>
     @endif
 @endsection

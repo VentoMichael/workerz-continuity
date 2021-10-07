@@ -173,10 +173,23 @@
                                         Aucune annonce trouvée ...
                                     </h4>
                                     <div class="button-dashboard-notifications">
-                                        <a class="button-cta button-edition button-personnal-dashboard"
-                                           href="{{route('announcements.plans')}}">
-                                            J'en poste une
-                                        </a>
+                                        @if(auth()->user()->plan_user_id === 1 && auth()->user()->announcements->count() >= 2 || auth()->user()->plan_user_id === 2 && auth()->user()->announcements->count() >= 5)
+                                            <p>
+                                                Votre quota d'annonce a expiré&nbsp;!
+                                            </p>
+                                            <p>Pensez à</p>
+                                            <a class="button-cta button-edition button-personnal-dashboard" href="{{route('users.plans')}}">
+                                                Passer au plan supérieur
+                                            </a>
+                                        @elseif(auth()->user()->plan_user_id === 3 && auth()->user()->announcements->count() > 16)
+                                            <p>
+                                                Votre quota d'annonce a expiré&nbsp;! Pensez à en supprimer.
+                                            </p>
+                                        @else
+                                            <a class="button-cta button-edition button-personnal-dashboard" href="{{route('announcements.create')}}">
+                                                J'en poste une
+                                            </a>
+                                        @endif
                                     </div>
                                 </section>
                             @endforelse

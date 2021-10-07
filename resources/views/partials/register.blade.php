@@ -73,7 +73,7 @@
             <input role="checkbox"
                    aria-checked="false" class="hiddenCheckbox inp-cbx"
                    name="newslettersignin" id="newslettersignin"
-                   type="checkbox" checked value="1"/>
+                   type="checkbox" @if(old('newslettersignin')) checked @endif value="1"/>
             <label class="cbx" for="newslettersignin">
                                                 <span>
                                                     <svg width="12px" height="9px" viewbox="0 0 12 9">
@@ -87,7 +87,7 @@
                 <input role="checkbox"
                     aria-checked="false" class="hiddenCheckbox inp-cbx"
                     name="conditions" id="conditions"
-                    type="checkbox" value="1"/>
+                    type="checkbox" @if(old('conditions')) checked @endif value="1"/>
                 <label class="cbx" for="conditions">
                                                 <span>
                                                     <svg width="12px" height="9px" viewbox="0 0 12 9">

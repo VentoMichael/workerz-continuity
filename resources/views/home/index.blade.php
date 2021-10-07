@@ -105,7 +105,7 @@
                 <p class="text-why">
                     Vous avez besoin d'un indépendant ou vous souhaitez proposer vos services&nbsp;?
                 </p>
-                <a href="{{route('announcements.plans')}}" class="button-cta">
+                <a href="{{route('announcements.create')}}" class="button-cta">
                     Je poste une annonce
                 </a>
             </div>

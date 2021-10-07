@@ -37,7 +37,7 @@
 </head>
 <body>
 <div class="containerBtnAddAnnouncment">
-    <a href="{{route('announcements.plans')}}" class="btnAddAnnouncement" title="Ajouter une annonce"
+    <a href="{{route('announcements.create')}}" class="btnAddAnnouncement" title="Ajouter une annonce"
        aria-label="Ajouter une annonce"></a>
 </div>
 <header>

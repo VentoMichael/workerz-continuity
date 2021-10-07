@@ -18,12 +18,14 @@ class NoPlansUser
     public function handle(Request $request, Closure $next)
     {
         $planUser = Session::get('plan');
-        if ($planUser == null && $request->plan == null) {
+        if (auth()->user()) {
+            if (auth()->user()->end_plan) {
 
-            Session::flash('errors',
-                'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
-            return redirect(route('users.plans').'#plans');
+                Session::flash('errors',
+                    'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
+                return redirect(route('users.plans') . '#plans');
 
+            }
         }
         return $next($request);
     }

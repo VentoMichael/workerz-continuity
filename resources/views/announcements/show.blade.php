@@ -184,12 +184,14 @@
                             </button>
                         </form>
                     @else
-                        <a class="formsendmsg button-cta button-msg formsenmsg-show-view-Notauth"
-                           style="text-align: center"
-                           href="{{route('login')}}"
-                           title="Il faut se connecté pour parler avec le detenteur de l'annonce">Il faut être connecté
-                            pour parler avec la personne ayant poster l'annonce
-                        </a>
+                            <form action="{{route('login')}}" class="formsendmsg">
+                                <button name="registerRequired"
+                                        title="Il faut se connecté pour parler avec le detenteur de l'annonce"
+                                        class="button-cta button-msg formsenmsg-show-view-Notauth show-view-msg send-msg-button">
+                                    Il faut être connecté
+                                    pour parler avec la personne ayant poster l'annonce
+                                </button>
+                            </form>
                     @endauth
                     @endif
                 </section>
@@ -205,98 +207,108 @@
             </div>
             <div class="container-ads-random">
                 @foreach($randomAds as $ra)
-                    <section class="container-infos-perso-ads container-ad-random" itemtype="https://schema.org/Thing"
+                    <section class="container-announcement container-ads-randomm" wire:loading.class="load" itemtype="https://schema.org/Thing"
                              itemscope>
-                        <div class="container_title__province">
+                        <div class="container-infos-announcement">
                             <div class="container-love-show">
                                 @auth
                                     <div
-                                            class="containerPrice container-show-love like-ads containerLove help-show @guest notHoverHeart @endguest">
+                                        class="containerPrice container-show-love like-users-connected like-index containerLove help-show @guest notHoverHeart @endguest">
                                         @if(!$ra->isLikedBy($user))
-                                            <form method="POST" title="Mettre un j'aime à {{$announcement->title}}"
-                                                  aria-label="Mettre un j'aime à {{$announcement->title}}"
+                                            <form method="POST" title="Mettre un j'aime à {{$ra->title}}"
+                                                  aria-label="Mettre un j'aime à {{$ra->title}}"
                                                   action="/announcements/{{$ra->slug}}/like">
                                                 @csrf
 
                                                 <button type="submit" class="button-loves">
                                                     <img class="heart" src="{{asset('svg/heart.svg')}}"
-                                                         alt="Mettre un j'aime à {{$announcement->title}}">
+                                                         alt="Mettre un j'aime à {{$ra->title}}">
                                                     <img class="heartFul" src="{{asset('svg/heartFul.svg')}}"
-                                                         alt="Un j'aime à déjà été attribuer à {{$announcement->title}}">
+                                                         alt="Le j'aime à déjà été attribuer à {{$ra->title}}">
                                                     <span>
                                         {{$ra->likes ? : 0}}</span></button>
                                             </form>
                                         @else
 
-                                            <form method="POST"
-                                                  title="Enlever le j'aime donner à {{$announcement->title}}"
-                                                  aria-label="Enlever le j'aime donner à {{$announcement->title}}"
+                                            <form method="POST" title="Enlever le j'aime donner à {{$ra->title}}"
+                                                  aria-label="Enlever le j'aime donner à {{$ra->title}}"
                                                   action="/announcements/{{$ra->slug}}/like">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="button-loves">
                                                     <img class="heartFul heartLiked" src="{{asset('svg/heartFul.svg')}}"
-                                                         alt="Mettre un j'aime à {{$announcement->title}}">
+                                                         alt="Enlever le j'aime donner à {{$ra->title}}">
                                                     <span>
                                         {{$ra->likes ? : 0}}</span></button>
                                             </form>
                                         @endif
                                     </div>
-
                                 @else
-                                    <a href="{{route('login')}}"
-                                       title="Il faut se connecter pour mettre un j'aime à {{$announcement->title}}">
-                                        <div class="containerPrice containerLove like-ads hepling helping-like help-show">
+                                        <a href="{{route('login')}}"
+                                           title="Il faut être connecté pour aimer l'annonce">
+                                            <div class="containerPrice containerLove hepling helping-like help-show">
 
-                                            <img class="heart" src="{{asset('svg/heart.svg')}}" alt="icone de coeur vide">
-                                            <img class="heartFul" src="{{asset('svg/heartFul.svg')}}"
-                                                 alt="icone de coeur remplis">
-                                            <p>
-                                                {{$ra->likes? : 0}}</p>
-                                            <span> Il faut être connecter pour aimer l'entreprise</span>
-                                        </div>
-                                    </a>
+                                                <img width="60" height="60" class="heart" src="{{asset('svg/heart.svg')}}"
+                                                     alt="icone de coeur vide">
+                                                <img width="60" height="60" class="heartFul" src="{{asset('svg/heartFul.svg')}}"
+                                                     alt="icone de coeur remplis">
+                                                <p>
+                                                    {{$ra->likes? : 0}}</p>
+                                                <span> Il faut être connecté pour aimer l'annonce</span>
+                                            </div>
+                                        </a>
                                 @endauth
                             </div>
-                            <div class="container-picture-ads container-profil-img">
+                            @if($ra->pricemax)
+                                <div class="containerPrice">
+                                    <img src="{{asset('svg/euro.svg')}}" alt="icone d'euro"><span>Max: {{$ra->pricemax}}€</span>
+                                </div>
+                            @endif
+                            <div class="container-image-announcement container-profil-img">
                                 @if($ra->picture)
                                     <img itemprop="image" src="{{ asset($ra->picture) }}"
-                                         alt="photo de profil de {{$ra->name}}"/>
+                                         alt="image de profil de {{$ra->title}}"/>
                                 @else
                                     <img itemprop="image" src="{{asset('svg/ad.svg')}}" alt="icone d'annonces">
                                 @endif
                             </div>
-                            <div>
-                                <h3 aria-level="3" itemprop="name">
+                            <div class="container-description-Ads">
+                                <h3 aria-level="3" itemprop="name" id="ad{{$ra->id}}">
                                     {{ucfirst($ra->title)}}
                                 </h3>
-                            </div>
-                            <div>
-                                <div class="container-infos-ads-randomm">
-                                    <div class="container-position-ads">
-                                        <img width="40px" height="40px" src="{{asset('svg/suitcase.svg')}}" alt="icone de malette">
-                                        <span class="job-cat-ads">
-                                    <p>{{ucfirst($ra->job)}}</p>
-                                    @if($ra->categoryAds->count())
-                                                <p class="categoryJob">
-                                            (@foreach($ra->categoryAds as $a){{$a->name}}{{ ($loop->last ? '' : ', ') }}@endforeach)
-                                        </p>
-                                            @endif
-                                </span>
+                                <p class="paragraph-ann" itemprop="description">
+                                    {{ucfirst(substr($ra->description,0,100)).'...'}}
+                                </p>
+                                <div class="container-infos">
+                                    <div class="container-info-announcement">
+                                        <img src="{{asset('svg/suitcase.svg')}}" alt="icone de malette de travail">
+                                        <div class="containerJobAds">
+                                            <p>
+                                                {{ucfirst($ra->job)}} @if($ra->categoryAds->count())
+                                                    <span class="categoryJob">
+                                                (@foreach($ra->categoryAds as $a){{$a->name}}{{ ($loop->last ? '' : ', ') }}@endforeach)
+                                            </span>
+                                                @endif
+                                            </p>
+                                        </div>
                                     </div>
                                     <div class="container-info-announcement" itemtype="https://schema.org/PostalAddress"
                                          itemscope>
-                                        <img width="40px" height="40px" src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
+                                        <img src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
                                         <div>
-                                            <p itemprop="addressRegion">{{ucfirst($announcement->province->name)}}</p>
+                                            @if($ra->adress)
+                                                <p itemprop="streetAddress">{{$ra->adress}}</p>
+                                            @endif
+                                            <p itemprop="addressRegion">
+                                                {{ucfirst($ra->province->name)}}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="/announcements/{{$ra->slug}}" class="btn-ads button-personnal-announcement">
-                                Aller voir {{$ra->name}}
-                            </a>
                         </div>
+                        <a href="/announcements/{{$ra->slug}}" title="Voir les détails de {{$ra->title}}" class="button-personnal-announcement">
+                            Voir les détails de {{$ra->title}}
+                        </a>
                     </section>
                 @endforeach
             </div>

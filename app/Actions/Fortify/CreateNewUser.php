@@ -65,7 +65,7 @@ class CreateNewUser implements CreatesNewUsers
                     'max:255',
                     Rule::unique(User::class),
                 ],
-                'number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:12'],
+                'number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:8','max:15'],
                 'password' => [
                     'required',
                     'min:8',

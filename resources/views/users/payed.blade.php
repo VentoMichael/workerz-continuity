@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
     @if (Session::has('success-users'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                                                  alt="pictogramme d'un v correct">
             <p>{!!session('success-users')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -19,7 +20,7 @@
                 </div>
             </div>
             <div class="container-svg">
-                <img width="300" height="300"src="{{asset('svg/Card_Payment_Monochromatic.svg')}}"
+                <img width="300" height="300" src="{{asset('svg/Card_Payment_Monochromatic.svg')}}"
                      alt="icone de carte">
             </div>
         </div>
@@ -47,12 +48,12 @@
                                     {{ucfirst($plan->name)}}
                                 </h4>
                                 <span class="planPrice">
-                                     {{number_format((float)$plan->price, 2, ',', '')}} €
+                             {{number_format((float)$plan->price, 2, ',', '')}} €
+                        </span>
+                                @if($plan->id !== 1)
+                                    <span style="margin-top: -20px;margin-bottom:10px;">
+                                    / mois
                                 </span>
-                                @if($plan->price != 0)
-                                    <span class="planPrice monthCost">
-                                         ({{number_format((float) 1 * ($plan->price/$plan->duration) * 30 , 2, ',', '')}} € / mois)
-                                    </span>
                                 @endif
                                 @if($plan->oldprice)
                                     <p class="reductionPrice">
@@ -61,34 +62,55 @@
                                 @endif
                             </div>
                             <ul>
+                                @if($plan->id === 1)
+                                    <li>
+                                        <img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                             alt="Icone d'un pictogramme v correct">
+                                        Durée : {{$plan->duration}} jours
+                                    </li>
+                                @endif
                                 <li>
-                                    <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">Durée : @if($plan->id == 1) {{$plan->duration}} jours @else {{$plan->duration / 30}} mois @endif
+                                    <img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                         alt="Icone d'un pictogramme v correct">
+                                    @if($plan->id == 1) Support basique @elseif($plan->id == 2) Support
+                                    intermédiaire @elseif($plan->id == 3) Support prioritaire @endif
                                 </li>
-                                <li>
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
-                            @if($plan->id == 1) Support basique @elseif($plan->id == 2) Support
-                            intermédiaire @elseif($plan->id == 3) Support prioritaire @endif
-                        </li>
-                        <li class="container-visibility">
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">                 <span class="container-visibility-plans">
+                                <li class="container-visibility">
+                                    <img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                         alt="Icone d'un pictogramme v correct">
+                                    <span class="container-visibility-plans">
+                                <span>Intégration
+                                @if($plan->id == 1)
+                                        de {{$plan->possibilityAdCreated}} annonces
+                                    @elseif($plan->id == 2)
+                                        de {{$plan->possibilityAdCreated}} annonces
+                                    @elseif($plan->id == 3)
+                                        de {{$plan->possibilityAdCreated}} annonces
+                                    @endif
+                                </span>
+                            </span>
+                                </li>
+                                <li class="container-visibility">
+                                    <img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                         alt="Icone d'un pictogramme v correct"> <span class="container-visibility-plans">
                                 <span>
                             @if($plan->id == 1)
-                                Basse visibilité
-                            @endif
-                            @if($plan->id == 2)
-                                Moyenne visibilité
-                            @endif
-                            @if($plan->id == 3)
-                                Haute visibilité
-                            @endif *
+                                        Basse visibilité
+                                    @endif
+                                    @if($plan->id == 2)
+                                        Moyenne visibilité
+                                    @endif
+                                    @if($plan->id == 3)
+                                        Haute visibilité
+                                    @endif *
                                 </span>
                                 <span class="helpPlans">Uniquement si vous êtes une entreprise</span>
                             </span>
-                        </li>
-                        <li class="container-visibility">
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}"
-                                 alt="Icone d'un pictogramme v correct">
-                            <span class="container-visibility-plans">
+                                </li>
+                                <li class="container-visibility">
+                                    <img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                         alt="Icone d'un pictogramme v correct">
+                                    <span class="container-visibility-plans">
                                 <span>
                                 @if($plan->id == 1)
                                         Visible parmis les top 100
@@ -96,11 +118,11 @@
                                         Visible parmis les top 15
                                     @elseif($plan->id == 3)
                                         Visible parmis les top 4
-                                @endif *
+                                    @endif *
                                 </span>
                                 <span class="helpPlans">Uniquement si vous êtes une entreprise</span>
                             </span>
-                        </li>
+                                </li>
                             </ul>
                         </section>
                     </div>
@@ -112,7 +134,8 @@
                         {{number_format((float)$plan->price, 2, ',', '')}} € </h3>
                     <p>Saisissez les informations relatives à votre carte de crédit</p>
                     <form class="form-login form-register show-content" enctype="multipart/form-data"
-                          aria-label="Payement pour l'enregistrement d'un compte" role="form" method="post" id="payment-form"
+                          aria-label="Payement pour l'enregistrement d'un compte" role="form" method="post"
+                          id="payment-form"
                           action="{{ route('users.paied') }}">
                         @csrf
                         <div class="container-form-email">
@@ -131,7 +154,9 @@
                             @enderror
                         </div>
                         <div>
-                            <input type="hidden" name="plan" @if(auth()->user()->sending_time_expire = 1 && auth()->user()) value="{{$plan->id}}" @else value="{{old('plan', $plan)}}" @endif>
+                            <input type="hidden" name="plan"
+                                   @if(auth()->user()->sending_time_expire = 1 && auth()->user()) value="{{$plan->id}}"
+                                   @else value="{{old('plan', $plan)}}" @endif>
                             <button
                                 id="card-button"
                                 class="button-cta"
@@ -148,5 +173,13 @@
 @endsection
 @section('scripts')
     <script src="https://js.stripe.com/v3/"></script>
-    <script>var style={base:{color:'#32325d',lineHeight:'18px',fontFamily:'"Helvetica Neue", Helvetica, sans-serif',fontSmoothing:'antialiased',fontSize:'16px','::placeholder':{color:'#aab7c4'}},invalid:{color:'#fa755a',iconColor:'#fa755a'}};const stripe=Stripe('{{ $stripe_key }}',{locale:'fr'});const elements=stripe.elements();const cardElement=elements.create('card',{style:style});const cardButton=document.getElementById('card-button');const clientSecret=cardButton.dataset.secret;cardElement.mount('#card-element');cardElement.addEventListener('change',function(event){var displayError=document.getElementById('card-errors');if(event.error){displayError.textContent=event.error.message}else{displayError.textContent=''}});var form=document.getElementById('payment-form');form.addEventListener('submit',function(event){event.preventDefault();stripe.handleCardPayment(clientSecret,cardElement,{payment_method_data:{}}).then(function(result){console.log(result);if(result.error){var errorElement=document.getElementById('card-errors');errorElement.textContent=result.error.message}else{console.log(result);form.submit()}})})</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let searchParams = new URLSearchParams(window.location.search);
+            if (searchParams.has('session_id')) {
+                const session_id = searchParams.get('session_id');
+                document.getElementById('session-id').setAttribute('value', session_id);
+            }
+        });
+    </script>
 @endsection

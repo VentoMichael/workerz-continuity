@@ -123,6 +123,7 @@
                 <input id="role_id" name="role_id" type="hidden" value="3">
                 <input id="plan_user_id" name="plan_user_id" type="hidden" value="{{$plan}}">
                 <input id="plan{{ $plan }}" name="plan" type="hidden" value="{{$plan}}">
+                <input id="{{$planName}}" name="lookup_key" type="hidden" value="{{request('lookup_key')}}">
                 <input type="hidden" name="type" value="user">
                 <button role="button" class="button-cta" name="user" type="submit">
                     Finaliser l'inscription

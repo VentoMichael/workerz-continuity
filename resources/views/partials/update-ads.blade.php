@@ -106,7 +106,7 @@
         </p>
         @enderror
         @if($plan == 1)
-            <p class="help informations"><a href="{{route('announcements.plans')}}#plans">Augmenter votre
+            <p class="help informations"><a href="{{route('announcements.create')}}#plans">Augmenter votre
                     plan</a> et
                 vous aurez la possibilité d'en ajouter jusqu'à 3</p>
         @endif

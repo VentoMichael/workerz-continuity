@@ -15,7 +15,7 @@
                         <form action="{{route('users.plans')}}" method="get">
                             @csrf
                             <input type="hidden" name="changeCurrentPlan">
-                            <button class="button-cta" id="changePlan">
+                            <button class="button-cta button-upgrade" id="changePlan">
                                 Je change de plan
                             </button>
                         </form>

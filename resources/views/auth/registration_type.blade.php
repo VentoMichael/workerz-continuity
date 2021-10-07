@@ -45,6 +45,7 @@
                     @csrf
                     <input type="hidden" name="type" value="user">
                     <input id="plan{{$plan}}" name="plan" type="hidden" value="{{$plan}}">
+                    <input id="{{$planName}}" name="lookup_key" type="hidden" value="{{request('lookup_key')}}">
                     <button class="button-cta" title="Je sélectionne la section 'Je cherche un professionnel'"
                             name="user">
                         Je fais ce choix
@@ -76,8 +77,8 @@
                     @method('get')
                     @csrf
                     <input id="companyplan{{$plan}}" name="plan" type="hidden" value="{{request('plan')}}">
+                    <input id="{{$planName}}" name="lookup_key" type="hidden" value="{{request('lookup_key')}}">
                     <input type="hidden" name="type" value="company">
-
                     <button class="button-cta" title="Je sélectionne la section 'Je suis un professionnel'"
                             name="company">
                         Je fais ce choix

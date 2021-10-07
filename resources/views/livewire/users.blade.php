@@ -86,44 +86,46 @@
                                 <img src="{{asset('svg/market.svg')}}" alt="icone d'un magasin">
                             @endif
                         </div>
-                        <h3 aria-level="3" itemprop="affiliation">
-                            {{ucfirst($worker->name)}}
-                        </h3>
-                        <p class="paragraph-ann">
-                            {{ucfirst($worker->description)}}
-                        </p>
-                        <div class="container-infos">
-                            <div class="container-info-announcement">
-                                <img src="{{asset('svg/suitcase.svg')}}" alt="icone de malette de travail">
-                                <div class="containerJobAds" itemprop="jobTitle">
-                                    <p>{{ucfirst($worker->job)}}</p>
-                                    @if($worker->categoryUser->count())
-                                        <p class="categoryJob">
-                                            (@foreach($worker->categoryUser as $w){{ucfirst($w->name)}}{{ ($loop->last ? '' : ', ') }}@endforeach)
-                                        </p>
-                                    @endif
-                                </div>
-                            </div>
-                            @if($worker->adresses->count())
+                        <div class="container-description-Ads">
+
+                            <h3 aria-level="3" itemprop="affiliation">
+                                {{ucfirst($worker->name)}}
+                            </h3>
+                            <p class="paragraph-ann">
+                                {{ucfirst($worker->description)}}
+                            </p>
+                            <div class="container-infos">
                                 <div class="container-info-announcement">
-                                    <img src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
-                                    <div class="container-location" itemprop="address">
-                                        <p>{{ucfirst($worker->adresses->first()->postal_adress)}}</p>
-                                        @if(ucfirst($worker->adresses->first()->postal_adress))
+                                    <img src="{{asset('svg/suitcase.svg')}}" alt="icone de malette de travail">
+                                    <div class="containerJobAds" itemprop="jobTitle">
+                                        <p>{{ucfirst($worker->job)}}</p>
+                                        @if($worker->categoryUser->count())
                                             <p class="categoryJob">
-                                                ({{ucfirst($worker->adresses->first()->province->name)}})</p>@else
-                                            <p class="categoryJob">{{ucfirst($worker->adresses->first()->province->name)}}</p>@endif
+                                                (@foreach($worker->categoryUser as $w){{ucfirst($w->name)}}{{ ($loop->last ? '' : ', ') }}@endforeach)
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
-                            @endif
+                                @if($worker->adresses->count())
+                                    <div class="container-info-announcement">
+                                        <img src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
+                                        <div class="container-location" itemprop="address">
+                                            <p>{{ucfirst($worker->adresses->first()->postal_adress)}}</p>
+                                            @if(ucfirst($worker->adresses->first()->postal_adress))
+                                                <p class="categoryJob">
+                                                    ({{ucfirst($worker->adresses->first()->province->name)}})</p>@else
+                                                <p class="categoryJob">{{ucfirst($worker->adresses->first()->province->name)}}</p>@endif
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div>
                         @if(auth()->id() !== $worker->id)
                             @auth
                                 @if($workerz)
-                                    <form action="{{route('messages.post',[$worker->slug])}}" method="POST"
-                                          class="formsendmsg formsenmsg-show-view">
+                                    <form action="{{route('messages.post',[$worker->slug])}}" method="POST">
                                         @csrf
                                         <input type="hidden" name="from_id" id="from_id{{$loop->index}}"
                                                value="{{auth()->user()->id}}">
@@ -131,7 +133,7 @@
                                                value="{{$worker->id}}">
                                         <input type="hidden" name="slug" id="slug{{$loop->index}}"
                                                value="{{$worker->slug}}">
-                                        <button type="submit" class="button-cta button-msg" name="talkTo">
+                                        <button type="submit" class="formsendmsg formsenmsg-show-view-Notauth button-cta button-msg" title="Parler avec {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}" name="talkTo">
                                             Parler avec {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}
                                         </button>
                                     </form>
@@ -146,7 +148,7 @@
                                 </form>
                             @endauth
                         @endif
-                        <a href="/workers/{{$worker->slug}}" class="button-personnal-announcement">
+                        <a href="/workers/{{$worker->slug}}" title="Voir les détails de {{ucfirst($worker->name)}}" class="button-personnal-announcement">
                             Voir les détails de {{ucfirst($worker->name)}}
                         </a>
                     </div>

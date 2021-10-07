@@ -1,5 +1,5 @@
 <div>
-    <a href="{{route('announcements.plans')}}" role="button" class="button-cta">
+    <a href="{{route('announcements.create')}}" role="button" class="button-cta">
         J'ajoute une annonce
     </a>
 </div>

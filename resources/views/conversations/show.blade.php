@@ -90,7 +90,7 @@
 
                         @error('message')
                         <p class="danger help"
-                           style="position: absolute;top: -30px;background: white;border-radius: 5px;padding: 0 3% 5px;margin-bottom: -3%;">
+                           style="position: absolute;top: -10px;background: white;border-radius: 5px;padding: 0 3% 5px;margin-bottom: -3%;">
                             {{$errors->first('message')}}
                         </p>
                         @enderror

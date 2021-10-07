@@ -18,7 +18,8 @@ class CreatePlanUsersTable extends Migration
             $table->string('name');
             $table->decimal('price');
             $table->decimal('oldprice')->nullable();
-            $table->string('duration');
+            $table->string('duration')->nullable();
+            $table->tinyInteger('possibilityAdCreated');
             $table->boolean('hight_visibility');
             $table->boolean('priority');
             $table->boolean('more_visible');

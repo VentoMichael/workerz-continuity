@@ -13,7 +13,9 @@
                     <div class="container-form-email notVisible">
                         <label for="email"
                         >Email</label>
-                        <input id="email" type="email" class="email-label @error('email') is-invalid @enderror" name="email" value="{{ request()->get('email') ?? old('email') }}" required aria-required="true" autocomplete="email" autofocus>
+                        <input id="email" type="email" class="email-label @error('email') is-invalid @enderror"
+                               name="email" value="{{ request()->get('email') ?? old('email') }}" required
+                               aria-required="true" autocomplete="email" autofocus>
 
                         @error('email')
                         <div class="container-error">
@@ -27,15 +29,19 @@
                         <label for="password"
                         >Mot de passe</label>
                         <input id="password" type="password"
-                               class="email-label @error('password') is-invalid @enderror" name="password" required aria-required="true"
+                               class="email-label @error('password') is-invalid @enderror" name="password" required
+                               aria-required="true"
                                autocomplete="new-password">
                         <div id="container-checkpass" class="container-checkpass">
-                            <input type="checkbox" class="password--visibleToggle password-toggle-reset" id="checkPass" checked>
-                            <div class="password--visibleToggle-eye eye-forget-pass open">
-                                <img width="40" height="60" src="{{asset('svg/eye-open.svg')}}" alt="icone de yeux ouvert"/>
+                            <input type="checkbox" class="password--visibleToggle password-toggle-reset" id="checkPass"
+                                   checked>
+                            <div class="password--visibleToggle-eye eye-pass-reset eye-forget-pass open">
+                                <img width="40" height="60" src="{{asset('svg/eye-open.svg')}}"
+                                     alt="icone de yeux ouvert"/>
                             </div>
-                            <div class="password--visibleToggle-eye eye-forget-pass close">
-                                <img width="40" height="60" src="{{asset('svg/eye-close.svg')}}" alt="icone de yeux fermé"/>
+                            <div class="password--visibleToggle-eye eye-pass-reset eye-forget-pass close">
+                                <img width="40" height="60" src="{{asset('svg/eye-close.svg')}}"
+                                     alt="icone de yeux fermé"/>
                             </div>
                         </div>
                         @error('password')
@@ -50,25 +56,36 @@
                     <div class="container-form-email">
                         <label for="password-confirm">Confirmer le mot de passe</label>
 
-                            <input id="password-confirm" type="password" class="email-label" name="password_confirmation" required aria-required="true" autocomplete="new-password">
+                        <input id="password-confirm" type="password" class="email-label" name="password_confirmation"
+                               required aria-required="true" autocomplete="new-password">
                     </div>
-                    <ul role="list" class="list-password-required">
+                    <ul role="list" class="list-password-required list-pass-reset">
                         <li id="cara">
-                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
+                                 alt="Icone d'un pictogramme v correct">
                             <p role="listitem">
                                 <span>&bull;</span> 8 caractères
                             </p>
                         </li>
                         <li id="maj">
-                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
+                                 alt="Icone d'un pictogramme v correct">
                             <p role="listitem">
                                 <span>&bull;</span> 1 majuscule
                             </p>
                         </li>
                         <li id="symbole">
-                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
+                                 alt="Icone d'un pictogramme v correct">
                             <p role="listitem">
                                 <span>&bull;</span> 1 chiffre
+                            </p>
+                        </li>
+                        <li id="same">
+                            <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
+                                 alt="Icone d'un pictogramme v correct">
+                            <p role="listitem">
+                                <span>&bull;</span> Identique
                             </p>
                         </li>
                     </ul>
@@ -83,13 +100,31 @@
             </div>
 
             <div class="container-svg">
-                    <img width="300" height="300" class="svg-icon" src="{{asset('svg/Settings_Monochromatic.svg')}}"
-                         alt="Icone d'un ordinateur avec un mot de passe crypter">
-                </div>
+                <img width="300" height="300" class="svg-icon" src="{{asset('svg/Settings_Monochromatic.svg')}}"
+                     alt="Icone d'un ordinateur avec un mot de passe crypter">
+            </div>
         </section>
     </div>
 @endsection
 @section('scripts')
     <script src="{{asset('js/passwordCheck.js')}}"></script>
+    <script>
+        a = document.getElementById("password");
+        c = document.getElementById("password-confirm");
+        function checkPass(){
+            var p = document.querySelector("#same p"),
+                k = document.getElementById("same");
+            a.value === c.value && a.value !== "" && c.value !== "" ?
+                (p.classList.add("good"), p.style.transition = ".5s", p.style.alignItems = "center", k.style.display = "flex",
+                    document.querySelector(".list-password-required li:nth-child(4) img").style.display = "inline") :
+                (p.classList.remove("good"), document.querySelector(".list-password-required li:nth-child(4) img").style.display = "none")
+        }
+        c.addEventListener("keyup", function(){
+            checkPass();
+        })
+        a.addEventListener("keyup", function(){
+            checkPass();
+        })
+    </script>
     <script src="{{asset('js/passwordSee.js')}}"></script>
 @endsection

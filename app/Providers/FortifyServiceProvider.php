@@ -48,6 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
             $regions = Province::all()->sortBy('name');
             $categories = Category::all()->sortBy('name');
             $plan = Session::get('plan');
+            $planName = Session::get('planName');
             $type = $request->type;
             Session::put('type', $type);
             $type = Session::get('type');
@@ -56,7 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
                     'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
             }
             return view('auth.register',
-                compact('plan', 'type', 'disponibilities', 'regions', 'categories', 'request'));
+                compact('plan','planName', 'type', 'disponibilities', 'regions', 'categories', 'request'));
         });
         Fortify::requestPasswordResetLinkView(function () {
             return view('auth.forgot-password');
@@ -73,7 +74,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         RateLimiter::for("login", function () {
-            Limit::perMinute(50);
+            Limit::perMinute(5);
         });
 
     }

@@ -1,25 +1,31 @@
 @extends('layouts.appDashboard')
 @section('content')
     @if (Session::has('expire'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/caution.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60"
+                                                                  src="{{asset('svg/caution.svg')}}"
+                                                                  alt="pictogramme d'un v correct">
             <p>{!!session('expire')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-update-not'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60"
+                                                                  src="{{asset('svg/cross.svg')}}"
+                                                                  alt="pictogramme d'un v correct">
             <p>{!!session('success-update-not')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-update'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                                                  alt="pictogramme d'un v correct">
             <p>{!!session('success-update')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-inscription'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}"
+                                                                  alt="pictogramme d'un v correct">
             <p>{!!session('success-inscription')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -31,6 +37,17 @@
                 Profil
             </h2>
             <div class="container-profil-dashboard">
+                @if(auth()->user()->end_plan != null)
+                    @if(auth()->user())
+                        <form action="{{route('users.plans')}}" method="get">
+                            @csrf
+                            <input type="hidden" name="changeCurrentPlan">
+                            <button class="button-cta button-upgrade" id="changePlan">
+                                Je change de plan
+                            </button>
+                        </form>
+                    @endif
+                @endif
                 @if(auth()->user()->end_plan == null)
                     <div class="container-button-expire">
                         <a href="{{route('usersAlready.plans')}}" class="button-cta button-expire">
@@ -45,9 +62,7 @@
                                 Informations personnelles
                             </h3>
                             <div class="form-login form-edit-company form-register form-edit-preview">
-
                                 <div class="container-register-form container-register">
-
                                     <div class="container-form-email">
                                         <div class="avatar-container">
                                             <div class="container-form-email avatar-profil avatar-dashboard">
@@ -55,13 +70,14 @@
                                                     <p>Logo</p>
                                                 </div>
                                                 <div class="container-profil-img container-profil-img">
-                                                @if(auth()->user()->picture != null)
-                                                    <img width="150" height="150" src="{{asset(auth()->user()->picture)}}"
-                                                         alt="logo de {{auth()->user()->name}}">
-                                                @else
-                                                    <img width="150" height="150" src="{{asset('svg/user.svg')}}"
-                                                         alt="image de profil par défaut">
-                                                @endif
+                                                    @if(auth()->user()->picture != null)
+                                                        <img width="150" height="150"
+                                                             src="{{asset(auth()->user()->picture)}}"
+                                                             alt="logo de {{auth()->user()->name}}">
+                                                    @else
+                                                        <img width="150" height="150" src="{{asset('svg/user.svg')}}"
+                                                             alt="image de profil par défaut">
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -72,7 +88,7 @@
                                     <div class="container-form-email">
                                         <p>Plan : {{$plan->name}}</p>
                                         <span
-                                            class="email-label">Date d'expiration le {{auth()->user()->end_plan->locale('fr')->isoFormat('Do MMMM YYYY, H:mm')}}</span>
+                                            class="email-label">Date d'expiration le {{auth()->user()->end_plan->locale('fr')->addHours(4)->isoFormat('Do MMMM YYYY, H:mm')}}</span>
                                     </div>
                                 @else
                                     <div class="container-form-email">
@@ -88,7 +104,8 @@
                                 @endif
                                 <div class="container-form-email">
                                     <p>Numéro de téléphone</p>
-                                    <span class="email-label">{{chunk_split(auth()->user()->phones()->first()->number, 4, ' ')}}</span>
+                                    <span
+                                        class="email-label">{{chunk_split(auth()->user()->phones()->first()->number, 4, ' ')}}</span>
                                 </div>
                                 @if(auth()->user()->phones()->count() > 1 && auth()->user()->phones()->skip(1)->first()->number != null)
                                     <div class="container-form-email">
@@ -276,13 +293,13 @@
                                             <p>Photo de profil</p>
                                         </div>
                                         <div class="container-profil-img container-profil-img">
-                                        @if(auth()->user()->picture != null)
-                                            <img width="150" height="150" src="{{asset(auth()->user()->picture)}}"
-                                                 alt="image de profil de {{auth()->user()->name}}">
-                                        @else
-                                            <img width="150" height="150" src="{{asset('svg/user.svg')}}"
-                                                 alt="image de profil par défaut">
-                                        @endif
+                                            @if(auth()->user()->picture != null)
+                                                <img width="150" height="150" src="{{asset(auth()->user()->picture)}}"
+                                                     alt="image de profil de {{auth()->user()->name}}">
+                                            @else
+                                                <img width="150" height="150" src="{{asset('svg/user.svg')}}"
+                                                     alt="image de profil par défaut">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="container-form-email">
@@ -316,7 +333,7 @@
                                         <div class="container-form-email">
                                             <p>Plan : {{$plan->name}}</p>
                                             <span
-                                                class="email-label">Date d'expiration le {{auth()->user()->end_plan->locale('fr')->isoFormat('Do MMMM YYYY, H:mm')}}</span>
+                                                class="email-label">Date d'expiration le {{auth()->user()->end_plan->locale('fr')->addHours(4)->isoFormat('Do MMMM YYYY, H:mm')}}</span>
                                         </div>
                                     @else
                                         <div class="container-form-email">

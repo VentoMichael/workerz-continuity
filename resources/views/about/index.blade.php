@@ -8,7 +8,7 @@
                         À propos de nous
                     </h2>
                     <p>
-                        <span itemprop="legalName">Workerz</span>, créé par <a itemprop="founder" href="http://ventomichael.site/">Vento Michael</a>, vous donne la
+                        <span itemprop="legalName">Workerz</span>, créé par <a itemprop="founder" href="https://ventomichael.com/">Vento Michael</a>, vous donne la
                         possibilité
                         de viser dans le mille&nbsp;!
                     </p>

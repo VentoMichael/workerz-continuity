@@ -45,9 +45,11 @@ class UserController extends Controller
         }
         $this->forgetNewsletter();
         $plan = request('plan');
+        $planName = request('lookup_key');
+        Session::put('planName', $planName);
         Session::put('plan', $plan);
         $type = \request('type');
-        return view('auth.registration_type', compact('plan', 'type','notificationsReaded'));
+        return view('auth.registration_type', compact('plan','planName', 'type','notificationsReaded'));
     }
 
     public function index(Request $request)
@@ -77,6 +79,7 @@ class UserController extends Controller
 
     public function payed(Request $request, User $user)
     {
+        $planName = PlanUser::where('id',$request->plan)->first();
         if (auth()->user()) {
             $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         }else{
@@ -95,7 +98,7 @@ class UserController extends Controller
         if (\auth()) {
             if ($request->plan == 1) {
                 $user = \auth()->user();
-                $trial = Carbon::now()->addDays(7)->addHours(2);
+                $trial = Carbon::now()->addDays(7)->subHours(2);
                 $user->end_plan = $trial;
                 $user->is_payed = 1;
                 $user->sending_time_expire = 0;
@@ -111,7 +114,7 @@ class UserController extends Controller
         }
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         $stripe_key = env('STRIPE_KEY');
-        $amount = $plan->price;
+        $amount = $planName->price;
         $amount *= 100;
         $amount = (int) $amount;
         $payment_intent = \Stripe\PaymentIntent::create([
@@ -154,7 +157,7 @@ class UserController extends Controller
         } else {
             $days = 3;
         }
-        $trial = Carbon::now()->addMonth($days)->addHours(2);
+        $trial = Carbon::now()->addMonth($days)->subHours(2);
         $user->end_plan = $trial;
         $user->plan_user_id = $request->plan;
         Session::flash('success-inscription',

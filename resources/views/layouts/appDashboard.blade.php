@@ -124,7 +124,7 @@
         Informations du pied de page
     </h2>
     <div class="copyright">
-        <small>Workerz - &#169; {{date('Y')}} - Réalisé par <a href="http://ventomichael.site/fr/">Vento
+        <small>Workerz - &#169; {{date('Y')}} - Réalisé par <a href="https://ventomichael.com">Vento
                 Michael</a></small>
     </div>
 </footer>

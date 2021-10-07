@@ -8,6 +8,8 @@ use App\Http\Middleware\NoPlansAds;
 use App\Http\Middleware\NoPlansUser;
 use App\Http\Middleware\PayedAds;
 use App\Http\Middleware\PayedUser;
+use App\Http\Middleware\QuotaExpired;
+use App\Http\Middleware\UserPlanExpired;
 use App\Http\Middleware\UserRoute;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -67,8 +69,9 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'payeduser' => PayedUser::class,
-        'payedads' => PayedAds::class,
         'userroute' => UserRoute::class,
+        'userPlanExpired' => UserPlanExpired::class,
+        'quotaExpired' => QuotaExpired::class,
         'adsroute' => AnnouncementRoute::class,
         'noplansuser' => noPlansUser::class,
         'noplansads' => NoPlansAds::class,

@@ -14,6 +14,6 @@ class LikeAnnouncementSeeder extends Seeder
      */
     public function run()
     {
-        LikeAnnouncement::factory()->count(100)->create();
+        LikeAnnouncement::factory()->count(10)->create();
     }
 }

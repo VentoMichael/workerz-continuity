@@ -38,7 +38,7 @@ class DashboardController extends Controller
         $messages = Message::where('to_id', '=', \auth()->user()->id)->with('user')->orderByDesc('created_at',
             'ASC')->take(3)->get();
         $lastAnnouncements = Announcement::where('user_id', '=',
-            \auth()->user()->id)->WithLikes()->NoBan()->Payement()->Published()->orderBy('view_count',
+            \auth()->user()->id)->WithLikes()->NoBan()->Published()->orderBy('view_count',
             'DESC')->orderBy('created_at', 'DESC')->take(3)->get();
         $notifications = tap(\auth()->user()->unreadNotifications)->markAsRead()->take(3);
 

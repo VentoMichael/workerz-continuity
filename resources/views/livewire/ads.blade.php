@@ -84,47 +84,45 @@
                                 <img itemprop="image" src="{{asset('svg/ad.svg')}}" alt="icone d'annonces">
                             @endif
                         </div>
-                        <h3 aria-level="3" itemprop="name" id="ad{{$announcement->id}}">
-                            {{ucfirst($announcement->title)}}
-                        </h3>
-                        <p class="paragraph-ann" itemprop="description">
-                            {{ucfirst($announcement->description)}}
-                        </p>
-                        <div class="container-infos">
-                            <div class="container-info-announcement">
-                                <img src="{{asset('svg/suitcase.svg')}}" alt="icone de malette de travail">
-                                <div class="containerJobAds">
-                                    <p>
-                                        {{ucfirst($announcement->job)}}
-                                    </p>
-                                    @if($announcement->categoryAds->count())
-                                        <p class="categoryJob">
-                                            (@foreach($announcement->categoryAds as $a){{$a->name}}{{ ($loop->last ? '' : ', ') }}@endforeach)
+                        <div class="container-description-Ads">
+                            <h3 aria-level="3" itemprop="name" id="ad{{$announcement->id}}">
+                                {{ucfirst($announcement->title)}}
+                            </h3>
+                            <p class="paragraph-ann" itemprop="description">
+                                {{ucfirst($announcement->description)}}
+                            </p>
+                            <div class="container-infos">
+                                <div class="container-info-announcement">
+                                    <img src="{{asset('svg/suitcase.svg')}}" alt="icone de malette de travail">
+                                    <div class="containerJobAds">
+                                        <p>
+                                            {{ucfirst($announcement->job)}} @if($announcement->categoryAds->count())
+                                                <span class="categoryJob">
+                                                (@foreach($announcement->categoryAds as $a){{$a->name}}{{ ($loop->last ? '' : ', ') }}@endforeach)
+                                            </span>
+                                            @endif
                                         </p>
-                                    @endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="container-info-announcement" itemtype="https://schema.org/PostalAddress"
-                                 itemscope>
-                                <img src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
-                                <div>
-                                    @if($announcement->adress)
-                                        <p itemprop="streetAddress">{{$announcement->adress}}</p>
-                                    @endif
-                                    <p itemprop="addressRegion">
-                                        {{ucfirst($announcement->province->name)}}</p>
+                                <div class="container-info-announcement" itemtype="https://schema.org/PostalAddress"
+                                     itemscope>
+                                    <img src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
+                                    <div>
+                                        @if($announcement->adress)
+                                            <p itemprop="streetAddress">{{$announcement->adress}}</p>
+                                        @endif
+                                        <p itemprop="addressRegion">
+                                            {{ucfirst($announcement->province->name)}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div>
                         @if(auth()->id() !== $announcement->user_id)
-
                             @auth
-
                                 @if($announcement)
-                                    <form action="{{route('messages.post',[$announcement->user->slug])}}" method="POST"
-                                          class="formsendmsg formsenmsg-show-view">
+                                    <form action="{{route('messages.post',[$announcement->user->slug])}}" method="POST">
                                         @csrf
                                         <input type="hidden" name="from_id" id="from_id{{$loop->index}}"
                                                value="{{auth()->user()->id}}">
@@ -132,7 +130,8 @@
                                                value="{{$announcement->user->id}}">
                                         <input type="hidden" name="slug" id="slug{{$loop->index}}"
                                                value="{{$announcement->user->slug}}">
-                                        <button type="submit" class="button-cta button-msg" name="talkTo">
+                                        <button type="submit" title="Parler avec {{ucfirst($announcement->user->name)}} {{ucfirst($announcement->user->surname)}}"
+                                                class="formsendmsg formsenmsg-show-view-Notauth button-cta formsenmsg-show-view button-personnal-announcement-talk" name="talkTo">
                                             Parler
                                             avec {{ucfirst($announcement->user->name)}} {{ucfirst($announcement->user->surname)}}
                                         </button>
@@ -142,13 +141,13 @@
                                 <form action="{{route('login')}}">
                                     <button name="registerRequired"
                                             title="Il faut se connecté pour parler avec le detenteur de l'annonce"
-                                            class="formsendmsg formsenmsg-show-view-Notauth button-cta formsenmsg-show-view">
+                                            class="formsendmsg formsenmsg-show-view-Notauth button-cta formsenmsg-show-view button-personnal-announcement-talk">
                                         Parler avec l'annonceur
                                     </button>
                                 </form>
                             @endauth
                         @endif
-                        <a href="/announcements/{{$announcement->slug}}" class="button-personnal-announcement">
+                        <a href="/announcements/{{$announcement->slug}}" title="Voir les détails de {{$announcement->title}}" class="button-personnal-announcement">
                             Voir les détails de {{$announcement->title}}
                         </a>
                     </div>

@@ -28,19 +28,6 @@ class AnnouncementController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function plans()
-    {
-         if (auth()->user()) {
-            $notificationsReaded = auth()->user()->notifications->where('read_at', null);
-        }else{
-            $notificationsReaded = '';
-        }
-        $plans = PlanAnnouncement::all();
-        $plan = \request()->plan;
-        Session::put('plan', $plan);
-        return view('announcements.plans', compact('plans','notificationsReaded', 'plan'));
-    }
-
     public function index()
     {
          if (auth()->user()) {
@@ -84,13 +71,11 @@ class AnnouncementController extends Controller
         }else{
             $notificationsReaded = '';
         }
-        $plan = \request()->plan;
-        Session::put('plan', $plan);
 
         $categories = Category::withCount("announcements")->get()->sortBy('name');
         $regions = Province::withCount("announcements")->get()->sortBy('name');
         $disponibilities = StartMonth::withCount("announcements")->get()->sortBy('id');
-        return view('announcements.create', compact('plan', 'disponibilities','notificationsReaded', 'categories', 'regions'));
+        return view('announcements.create', compact( 'disponibilities','notificationsReaded', 'categories', 'regions'));
 
     }
 
@@ -102,16 +87,15 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-        $plan = Session::get('plan');
         if (!$request->has('is_payed')) {
             $data = Validator::make($request->all(), [
-                'title' => 'required',
+                'title' => 'required|unique:announcements',
                 'picture' => 'image:jpg,jpeg,png|max:2048',
                 'description' => 'required|max:256',
                 'job' => 'required|max:256',
                 'pricemax'=> 'numeric|max:999999|nullable',
                 'location' => 'required|not_in:0',
-                'categoryAds' => 'required|array|max:'.\request('plan'),
+                'categoryAds' => 'required|array|max:'.\auth()->user()->plan_user_id,
                 'startmonth' => 'required',
             ])->validate();
         }
@@ -135,30 +119,23 @@ class AnnouncementController extends Controller
         $announcement->user_id = Auth::id();
         $announcement->province_id = $request->location;
         $announcement->start_month_id = $request->startmonth;
-        $announcement->plan_announcement_id = $plan;
         $ct = new AnnouncementCategory();
         $ct->category_id = $request->categoryAds;
-        if ($plan == 1 || \request()->old('plan') == 1 || \request('plan') == 1) {
+        if (\auth()->user()->plan_user_id === 1) {
             if ($request->has('is_draft')) {
                 $announcement->is_draft = true;
-                $payed = false;
-                Session::forget('plan');
                 Session::flash('success-inscription', 'Votre annonce a été enregistrer dans vos brouillons&nbsp;!');
-                $announcement->is_payed = $payed;
                 $announcement->save();
                 return redirect('/dashboard/ads/draft/'.$announcement->slug);
             } else {
                 $announcement->is_draft = false;
-                $payed = true;
                 $trial = Carbon::now()->addDays(7)->addHours(2);
                 $announcement->end_plan = $trial;
                 Mail::to(env('MAIL_FROM_ADDRESS'))
                     ->send(new AdsCreated($data));
-                Session::forget('plan');
                 Session::flash('success-inscription',
                     'Votre annonce a été bien mise en ligne&nbsp;!');
             }
-            $announcement->is_payed = $payed;
             $announcement->save();
             $announcement->categoryAds()->attach($ct->category_id);
             \auth()->user()->notify(new AdCreated($announcement));
@@ -166,27 +143,21 @@ class AnnouncementController extends Controller
         } else {
             if ($request->has('is_draft')) {
                 $announcement->is_draft = true;
-                $payed = false;
                 Session::flash('success-inscription', 'Votre annonce a été enregistrer dans vos brouillons&nbsp;!');
-                $announcement->is_payed = $payed;
                 $announcement->save();
                 $announcement->categoryAds()->attach($ct->category_id);
-                Session::forget('plan');
                 return redirect('/dashboard/ads/draft/'.$announcement->slug);
             } else {
                 $announcement->is_draft = false;
-                $payed = false;
                 Session::flash('success-inscription',
-                    'Votre annonce ne sera visible qu\'aprés payement&nbsp;!');
+                    'Votre annonce a été bien mise en ligne&nbsp;!');
             }
-            $announcement->is_payed = $payed;
             $announcement->save();
             $announcement->categoryAds()->attach($ct->category_id);
-            $planId = PlanAnnouncement::where('id', '=', $plan)->first();
             $announcement->user->notify(new AdCreated($announcement));
             Session::flash('success-ads',
-                'Votre annonce est presque finalisée, elle sera visible qu\'après reçu de votre payement&nbsp;!');
-            return redirect(route('announcements.payed', compact('planId', 'announcement', 'plan')));
+                'Votre annonce a été bien mise en ligne&nbsp;!');
+            return redirect(route('/announcements/'.$announcement->slug, compact( 'announcement')));
         }
     }
 

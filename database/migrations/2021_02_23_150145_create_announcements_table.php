@@ -26,8 +26,6 @@ class CreateAnnouncementsTable extends Migration
             $table->boolean('is_draft');
             $table->bigInteger('view_count')->default(0);
             $table->boolean('sending_time_expire')->default(false);
-            $table->boolean('is_payed')->default(false);
-            $table->dateTime('end_plan')->nullable();
             $table->timestamps();
         });
     }

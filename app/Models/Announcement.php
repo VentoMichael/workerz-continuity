@@ -40,12 +40,7 @@ class Announcement extends Model
 
     public function scopeNoBan($query)
     {
-        return $query->where('banned', '=', '0');
-    }
-
-    public function scopePayement($query)
-    {
-        return $query->where('is_payed', '=', '1');
+        return $query->where('announcements.banned', '=', '0');
     }
     public function scopeDraft($query)
     {
@@ -76,10 +71,6 @@ class Announcement extends Model
         return $this->belongsTo(StartMonth::class, 'start_month_id');
     }
 
-    public function plan_announcement()
-    {
-        return $this->belongsTo(PlanAnnouncement::class);
-    }
 
     public function categoryAds()
     {

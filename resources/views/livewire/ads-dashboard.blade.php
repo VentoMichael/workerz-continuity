@@ -39,7 +39,7 @@
                         <h3 aria-level="3">
                             Aucune annonce trouvée ...
                         </h3>
-                        <a class="button-cta" href="{{route('announcements.plans')}}">
+                        <a class="button-cta" href="{{route('announcements.create')}}">
                             J'en poste une
                         </a>
                     </div>

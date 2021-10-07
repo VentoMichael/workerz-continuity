@@ -26,8 +26,9 @@ class Ads extends Component
              $announcements = Announcement::query()
                 ->Published()
                 ->NoBan()
-                ->Payement()
-                ->orderBy('plan_announcement_id', 'DESC')
+                 ->join('users', 'users.id', 'announcements.user_id')
+                 ->select('users.plan_user_id','announcements.*')
+                 ->orderBy('users.plan_user_id','DESC')
                 ->orderBy('created_at', 'DESC')
                 ->when(
                     $this->categoryAds,
@@ -65,9 +66,9 @@ class Ads extends Component
             }
             $announcements = Announcement::Published()
                 ->NoBan()
-                ->Payement()
-                ->orderBy('plan_announcement_id', 'DESC')
-                ->orderBy('created_at', 'DESC')
+                ->join('users', 'users.id', 'announcements.user_id')
+                ->select('users.plan_user_id','announcements.*','like_announcements.*')
+                ->orderBy('users.plan_user_id','DESC')
                 ->when(
                     $this->categoryAds,
                     function ($query) {
