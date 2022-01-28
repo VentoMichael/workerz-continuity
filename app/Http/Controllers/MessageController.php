@@ -77,8 +77,17 @@ class MessageController extends Controller
         $message->to_id = $request->to_id;
         $message->created_at = Carbon::now()->addHours(2);
         $message->save();
-        Session::flash('success-ads',
+        if (Session::get('applocale') === 'en') {
+            Session::flash('success-ads',
+            'Your message has been sent!');
+        } elseif (Session::get('applocale') === 'nl') {
+            Session::flash('success-ads',
+            'Uw bericht is verzonden!');
+        } else {
+            Session::flash('success-ads',
             'Votre message a bien été envoyer&nbsp;!');
+        }
+
         $receiper = User::where('email',$message->receiver->email)->first();
         $receiper->notify(new MessageReceived($message));
         //broadcast(new MessageCreated($message));
@@ -94,6 +103,13 @@ class MessageController extends Controller
     public function deleteConversations(User $user)
     {
         $d = Message::where('from_id','=',$user->id)->where('to_id','=',\auth()->id())->delete();
-        return Redirect::route('dashboard.messages')->with('success-delete', 'Conversation avec '.$user->name.' supprimée&nbsp!');
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = 'Conversation with '.$user->name.' deleted&nbsp!';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = 'Gesprek met '.$user->name.' verwijderd&nbsp!';
+        } else {
+            $msgSuccess = 'Conversation avec '.$user->name.' supprimée&nbsp!';
+        }
+        return Redirect::route('dashboard.messages')->with('success-delete',$msgSuccess);
     }
 }

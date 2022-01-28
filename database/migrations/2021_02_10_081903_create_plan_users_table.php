@@ -16,6 +16,7 @@ class CreatePlanUsersTable extends Migration
         Schema::create('plan_users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('idPlanStripe');
             $table->decimal('price');
             $table->decimal('oldprice')->nullable();
             $table->string('duration')->nullable();

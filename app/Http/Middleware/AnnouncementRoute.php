@@ -17,9 +17,17 @@ class AnnouncementRoute
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->route('announcement') && $request->route('announcement')->is_payed == 0 && $request->route('announcement')->is_draft == 0 && $request->route('announcement')->banned == 0  ) {
-            Session::flash('not-permitted',
+        if($request->route('announcement') && $request->route('announcement')->is_draft == 1 && $request->route('announcement')->banned == 1  ) {
+            if (Session::get('applocale') === 'en') {
+                Session::flash('not-permitted',
+                'Oops ! The ad you are looking for is not available');
+            } elseif (Session::get('applocale') === 'nl') {
+                Session::flash('not-permitted',
+                'Oeps ! De advertentie die u zoekt is niet beschikbaar');
+            } else {
+               Session::flash('not-permitted',
                 'Oops ! L\'annonce que vous recherchez n\'est pas disponible');
+            }
             return Redirect(route('announcements'));
         }
         return $next($request);

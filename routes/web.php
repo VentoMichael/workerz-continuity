@@ -1,8 +1,11 @@
 <?php
+namespace App\Http\Middleware;
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LanguageController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use App\Events\Message;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -19,6 +22,8 @@ use Illuminate\Http\Response;
 
 // HOME PAGE
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
+
+Route::get('lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.switch');
 
 
 // NEWSLETTER
@@ -105,6 +110,13 @@ Route::prefix('')->middleware(['auth'])->group(function () {
     Route::get('/dashboard/profil', [
         \App\Http\Controllers\DashboardController::class, 'profil'
     ])->name('dashboard.profil')->middleware('payeduser');
+
+    Route::get('/dashboard/profil/cancel', [
+        \App\Http\Controllers\DashboardController::class, 'cancelSubscription'
+    ])->name('dashboard.cancelSub');
+    Route::get('/dashboard/profil/activate', [
+        \App\Http\Controllers\DashboardController::class, 'activateSubscription'
+    ])->name('dashboard.activateSub');
     Route::get('/plans', [\App\Http\Controllers\UserController::class, 'plansAlreadyUser'])
         ->name('usersAlready.plans');
     Route::get('/dashboard/profil/edit', [
@@ -164,3 +176,7 @@ Route::post('/contact', [ContactController::class, 'store'])
     ->name('contact.store');
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'create'])
     ->name('contact');
+
+
+
+

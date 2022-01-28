@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
     @if (Session::has('errors'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="pictogramme d'une croix rouge">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="{!! __('messages.bad__answer')}}">
             <p>{!!session('errors')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-inscription'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="pictogramme d'une croix rouge">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="{!! __('messages.bad__answer')}}">
             <p>{!!session('success-inscription')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -17,22 +17,22 @@
             <div>
                 <div class="container-home-text">
                     <h2 aria-level="2">
-                        Des clients vous attendent
+                        {!! __('messages.ads.plans__title')}}
                     </h2>
                     <p>
-                        Après cette étape, votre annonce sera visible parmis beaucoup de potentiels clients&nbsp;!
+                        {!! __('messages.ads.plans__text')}}
                     </p>
                 </div>
             </div>
             <div class="container-svg">
                 <img width="300" height="300" src="{{asset('svg/Success_Monochromatic.svg')}}"
-                     alt="Personne choissisant la catégorie de métier">
+                     alt="{!! __('messages.ads.plans__alt__img')}}">
             </div>
         </div>
     </section>
     <section class="container-home container-announcements container-create-ads">
         <div class="title-first-step-register">
-            <h2 aria-level="2">Plan pour votre annonce</h2>
+            <h2 aria-level="2">{!! __('messages.ads.plans__title__ads')}}</h2>
         </div>
         <div class="container-all-announcement show-content container-create-ads-infos container-plans">
             @foreach($plans as $plan)
@@ -46,7 +46,7 @@
                         </span>
                         @if($plan->price != 0)
                         <span class="planPrice monthCost">
-                             ({{ 1 * ($plan->price/$plan->duration) * 30 }} € / mois)
+                             ({{ 1 * ($plan->price/$plan->duration) * 30 }} € / {!! __('messages.ads.plans__month__text')}})
                         </span>
                         @endif
                         @if($plan->oldprice)
@@ -57,34 +57,34 @@
                     </div>
                     <ul>
                         <li>
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">Durée : {{$plan->duration}} jours
+                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">{!! __('messages.ads.duration__word')}}{{$plan->duration}} {!! __('messages.ads.days__word')}}
                         </li>
                         <li>
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
-                            @if($plan->id == 1) Support basique @elseif($plan->id == 2) Support intermédiaire @elseif($plan->id == 3) Support prioritaire @endif
+                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">
+                            @if($plan->id == 1) {!! __('messages.ads.basic__support')}}@elseif($plan->id == 2) {!! __('messages.ads.intermediaire__support')}} @elseif($plan->id == 3) {!! __('messages.ads.priority__support')}} @endif
                         </li>
                         <li>
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">
                             @if($plan->id == 1)
-                                Basse visibilité
+                                {!! __('messages.ads.little__visibility')}}
                             @endif
                             @if($plan->id == 2)
-                                Moyenne visibilité
+                                {!! __('messages.ads.mid__visibility')}}
                             @endif
                             @if($plan->id == 3)
-                                Haute visibilité
+                                {!! __('messages.ads.hight__visibility')}}
                             @endif
                         </li>
                         <li>
-                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="Icone d'un pictogramme v correct">@if($plan->id == 1)  Visible parmis les top 100 @elseif($plan->id == 2)  Visible parmis les top 15 @elseif($plan->id == 3)  Visible parmis les top 4 @endif
+                            <img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">@if($plan->id == 1)  {!! __('messages.ads.visibility__top__hundred')}} @elseif($plan->id == 2)  {!! __('messages.ads.visibility__top__fiveteen')}} @elseif($plan->id == 3)  {!! __('messages.ads.visibility__top__four')}} @endif
                         </li>
                     </ul>
-                    <form aria-label="Création d'une annonce" action="{{route('announcements.create')}}" method="post">
+                    <form aria-label="{!! __('messages.ads.label__form__create_ad')}}" action="{{route('announcements.create')}}" method="post">
                         @method('get')
                         @csrf
                         <input id="plan{{$plan->id}}" name="plan" type="hidden" value="{{$plan->id}}">
                         <button>
-                            Je séléctionne {{ucfirst($plan->name)}}
+                            {!! __('messages.ads.btn__create__ad')}}{{ucfirst($plan->name)}}
                         </button>
                     </form>
                 </section>

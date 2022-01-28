@@ -30,30 +30,25 @@ class Announcement extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('is_draft', '=', false);
-    }
-
-    public function scopeAdspayed($query)
-    {
-        return $query->where('plan_announcement_id', '!=', '1');
+        return $query->where('is_draft', false);
     }
 
     public function scopeNoBan($query)
     {
-        return $query->where('announcements.banned', '=', '0');
+        return $query->where('announcements.banned', '0');
     }
     public function scopeDraft($query)
     {
-        return $query->where('is_draft', '=', '1');
+        return $query->where('is_draft', '1');
     }
     public function scopeNotDraft($query)
     {
-        return $query->where('is_draft', '=', '0');
+        return $query->where('is_draft', '0');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->orderByDesc('plan_user_id');
     }
 
     public function getPicAttribute($value)

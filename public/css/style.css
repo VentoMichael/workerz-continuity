@@ -207,7 +207,7 @@ div .container-profil-img img {
     grid-gap: 30px
 }
 
-..container-announcements section .counter-read-message {
+.container-announcements section .counter-read-message {
     top: -10px;
     left: -10px
 }
@@ -217,7 +217,7 @@ div .container-profil-img img {
 }
 
 .profil-item .counter-read-message {
-    font-family: fira;
+    font-family: fira, sans-serif;
     color: #fff;
     background: var(--blueLight);
     padding: 4px 8px;
@@ -1071,7 +1071,8 @@ div .box-about img {
 .container-svg img {
     width: 100%;
     max-width: 500px;
-    max-height: 300px
+    max-height: 300px;
+    height: 100%;
 }
 
 .logo:hover a {

@@ -1,19 +1,19 @@
 @extends('layouts.appDashboard')
 @section('content')
     @if (Session::has('expire'))
-        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/caution.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/caution.svg')}}" alt="{!! __('messages.good__answer')!!}">
             <p>{!!session('expire')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-inscription'))
-        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')!!}">
             <p>{!!session('success-inscription')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('errors'))
-        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/cross.svg')}}" alt="pictogramme d'une croix rouge">
+        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/cross.svg')}}" alt="{!! __('messages.bad__answer')!!}">
             <p>{!!session('errors')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -22,12 +22,12 @@
         @include('partials.navigationDashboard')
         <section class="container-dashboard">
             <h2 aria-level="2">
-                Tableau de bord
+                 {!! __('messages.dashboard_workerz.title__index')!!}
             </h2>
             <div class="container-sections-dashboard container-dashboards">
                 <section class="container-dashboard-notif">
                     <h3 aria-level="3">
-                        Les dernières notifications
+                         {!! __('messages.dashboard_workerz.title__index__last__notifications')!!}
                     </h3>
                     <div class="container-picto-dashboard">
                         <div class="container-messages">
@@ -36,31 +36,29 @@
                                     <div class="container-horary-notification-dashboard">
                                         @if($notification->created_at->isToday())
                                             <p>
-                                                Aujourd'hui, {{$notification->created_at->locale('fr')->isoFormat('Do MMMM, HH:ss')}}
+                                                 {!! __('messages.dashboard_workerz.today__word')!!} {{$notification->created_at->locale('en')->isoFormat('Do MMMM, HH:ss')}}
                                             </p>
                                         @else
                                             <p>
-                                                {{$notification->created_at->locale('fr')->isoFormat('Do MMMM YYYY, H:mm')}}
+                                                {{$notification->created_at->locale('en')->isoFormat('Do MMMM YYYY, H:mm')}}
                                             </p>
                                         @endif
                                     </div>
                                     @if($notification->type === 'App\Notifications\AdCreated')
                                         <div class="container-notifications-dashboard">
                                             <img itemprop="image" src="{{asset('svg/ad.svg')}}"
-                                                 alt="icone d'annonces">
+                                                 alt="{!! __('messages.ads.icone__ads__alt')!!}">
                                             <h4 aria-level="4">
-                                                Votre annonce <i>{{$notification->data['announcement']['title'] }}</i> est en
-                                                ligne&nbsp;!
+                                                 {!! __('messages.dashboard_workerz.you__re__ad')!!}<i>{{$notification->data['announcement']['title'] }}</i>  {!! __('messages.dashboard_workerz.id__online__tet')!!}
                                             </h4>
                                         </div>
                                     @endif
                                     @if($notification->type === 'App\Notifications\MessageReceived')
                                         <div class="container-notifications-dashboard">
                                             <img itemprop="image" src="{{asset('svg/messenger.svg')}}"
-                                                 alt="icone de messages">
+                                                 alt="{!! __('messages.dashboard_workerz.icone__msg')!!}">
                                             <h4 aria-level="4">
-                                                Vous avez reçu un message
-                                                de <i>{{$notification->data['message']['user']['name'] }}</i>
+                                                 {!! __('messages.dashboard_workerz.notif__reeived__msg')!!}<i>{{$notification->data['message']['user']['name'] }}</i>
                                             </h4>
                                         </div>
                                     @endif
@@ -68,7 +66,7 @@
                             @empty
                                 <div class="messages-container">
                                     <h4 aria-level="4">
-                                        Aucune notification pour le moment
+                                         {!! __('messages.dashboard_workerz.no__notifications')!!}
                                     </h4>
                                 </div>
                             @endforelse
@@ -76,7 +74,7 @@
 @if($notifications->count() >0)
                         <div class="button-dashboard-notifications">
                             <a class="button-cta button-edition" href="{{route('dashboard.notifications')}}">
-                                Toutes les notifications
+                                 {!! __('messages.dashboard_workerz.all__notifications')!!}
                             </a>
                         </div>
     @endif
@@ -84,7 +82,7 @@
                 </section>
                 <section class="container-dashboard-notif container-dashboard-messenger">
                     <h3>
-                        Les 3 derniers messages
+                         {!! __('messages.dashboard_workerz.last__three__msg')!!}
                     </h3>
                     <div class="container-picto-dashboard">
                         @forelse($messages as $message)
@@ -92,13 +90,12 @@
                                 <div class="container-horary-notification-dashboard container-index-dashboard">
                                     <div class="container-horary-notification-dashboard">
                                         <p>
-                                            Reçu le {{$message->created_at->locale('fr')->isoFormat('Do MMMM, HH:ss')}}
+                                             {!! __('messages.dashboard_workerz.msg__received')!!}{{$message->created_at->locale('en')->isoFormat('Do MMMM, HH:ss')}}
                                         </p>
                                     </div>
                                     <div>
                                         <h4 aria-level="4">
-                                            Vous avez reçu un message de la part
-                                            de <i>
+                                             {!! __('messages.dashboard_workerz.new__msg__of')!!}<i>
                                             {{ucfirst($message->user->name)}} {{ucfirst($message->user->surname)}}</i>
                                         </h4>
                                     </div>
@@ -107,12 +104,12 @@
                         @empty
                             <section class="messages-container">
                                 <h4 aria-level="4">
-                                    Aucun message trouvé ...
+                                     {!! __('messages.dashboard_workerz.no__msg__found')!!}
                                 </h4>
                                 <div class="button-dashboard-notifications">
                                     <a class="button-cta button-edition button-personnal-dashboard"
                                        href="{{route('announcements')}}">
-                                        Je vais voir les annonces
+                                         {!! __('messages.dashboard_workerz.see__all__ads')!!}
                                     </a>
                                 </div>
                             </section>
@@ -120,7 +117,7 @@
                         @if($messages->count() >0)
                         <div class="button-dashboard-notifications">
                             <a class="button-cta button-edition button-msg-dash button-msg-dashboard" href="{{route('dashboard.messages')}}">
-                                Tous mes messages
+                                 {!! __('messages.dashboard_workerz.all__msg')!!}
                             </a>
                         </div>
                             @endif
@@ -128,7 +125,7 @@
                 </section>
                 <section class="container-dashboard-notif container-dashboard-ads">
                     <h3 aria-level="3">
-                        Les 3 annonces ayant le plus de succès
+                         {!! __('messages.dashboard_workerz.last__ads__success')!!}
                     </h3>
                     <div class="container-picto-dashboard">
                         <div class="container-messages container-ads-index">
@@ -138,10 +135,10 @@
                                         <div style="align-self: center;">
                                             @if($ad->picture)
                                                 <img itemprop="image" src="{{ asset($ad->picture) }}"
-                                                     alt="photo de profil de {{ucfirst($ad->title)}}"/>
+                                                     alt=" {!! __('messages.ads.label__picture')!!} {{ucfirst($ad->title)}}"/>
                                             @else
                                                 <img itemprop="image" src="{{asset('svg/ad.svg')}}"
-                                                     alt="icone d'annonces">
+                                                     alt=" {!! __('messages.ads.icone__ads__alt')!!}">
                                             @endif
                                         </div>
 
@@ -151,43 +148,43 @@
                                     </div>
                                     <div>
                                         <p class="dateAds">
-                                            Actif jusqu'au {{$ad->created_at->locale('fr')->isoFormat('Do MMMM, YYYY')}}
+                                             {!! __('messages.dashboard_workerz.actif__on')!!}{{$ad->created_at->locale('en')->isoFormat('Do MMMM, YYYY')}}
                                         </p>
                                     </div>
                                     <div class="container-counter-view">
-                                        <p class="view-counter view-counter-dashboard">@if($ad->view_count > 999) 1K @else {{ $ad->view_count }} @endif @if($ad->view_count >1 )
-                                                vues @else vue @endif</p>
-                                        <p class="view-like view-counter-dashboard">@if($ad->likes > 999) 1K @else{{$ad->likes ? : 0}} @endif @if($ad->likes == null || $ad->likes <= 1)
-                                                j'aime @else j'aimes @endif</p>
+                                        <p class="view-counter view-counter-dashboard" @if($ad->view_count) title="{{ $ad->view_count }}" @endif>@if($ad->view_count > 999) +1K @else {{ $ad->view_count }} @endif @if($ad->view_count >1 )
+                                                 {!! __('messages.dashboard_workerz.vues__word')!!} @else  {!! __('messages.dashboard_workerz.vue__word')!!} @endif</p>
+                                        <p class="view-like view-counter-dashboard" @if($ad->likes) title="{{$ad->likes}}" @endif>@if($ad->likes > 999) +1K @else{{$ad->likes ? : 0}} @endif @if($ad->likes == null || $ad->likes <= 1)
+                                                 {!! __('messages.dashboard_workerz.love__word')!!} @else  {!! __('messages.dashboard_workerz.loves__word')!!} @endif</p>
                                     </div>
                                     <div class="button-dashboard-notifications">
                                         <a class="button-cta button-edition button-personnal-dashboard"
                                            href="dashboard/ads/{{$ad->slug}}">
-                                            Voir <i>{{ucfirst($ad->title)}}</i>
+                                             {!! __('messages.dashboard_workerz.see__word')!!} <i>{{ucfirst($ad->title)}}</i>
                                         </a>
                                     </div>
                                 </section>
                             @empty
                                 <section class="messages-container">
                                     <h4 aria-level="4">
-                                        Aucune annonce trouvée ...
+                                         {!! __('messages.dashboard_workerz.no__ads__found')!!}
                                     </h4>
                                     <div class="button-dashboard-notifications">
                                         @if(auth()->user()->plan_user_id === 1 && auth()->user()->announcements->count() >= 2 || auth()->user()->plan_user_id === 2 && auth()->user()->announcements->count() >= 5)
                                             <p>
-                                                Votre quota d'annonce a expiré&nbsp;!
+                                                 {!! __('messages.dashboard_workerz.quota__expired__title')!!}
                                             </p>
-                                            <p>Pensez à</p>
+                                            <p> {!! __('messages.dashboard_workerz.think__word')!!}</p>
                                             <a class="button-cta button-edition button-personnal-dashboard" href="{{route('users.plans')}}">
-                                                Passer au plan supérieur
+                                                 {!! __('messages.dashboard_workerz.pass__sup__plan')!!}
                                             </a>
                                         @elseif(auth()->user()->plan_user_id === 3 && auth()->user()->announcements->count() > 16)
                                             <p>
-                                                Votre quota d'annonce a expiré&nbsp;! Pensez à en supprimer.
+                                                 {!! __('messages.dashboard_workerz.quota__expired__text')!!}
                                             </p>
                                         @else
                                             <a class="button-cta button-edition button-personnal-dashboard" href="{{route('announcements.create')}}">
-                                                J'en poste une
+                                                 {!! __('messages.dashboard_workerz.ads__words')!!}
                                             </a>
                                         @endif
                                     </div>
@@ -196,7 +193,7 @@
                             @if($lastAnnouncements->count() >0)
                             <div class="button-dashboard-notifications">
                                 <a class="button-cta button-edition" href="{{route('dashboard.ads')}}">
-                                    Toutes mes annonces
+                                     {!! __('messages.dashboard_workerz.all__my__ads')!!}
                                 </a>
                             </div>
                                 @endif

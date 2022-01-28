@@ -4,19 +4,19 @@
         @include('partials.navigationDashboard')
         <section class="container-dashboard container-profil">
             <h2 aria-level="2">
-                Profil
+                {!! __('messages.dashboard_workerz.profil__title')}}
             </h2>
             <div class="container-profil-dashboard">
                 <div class="container-link-to-back container-change-plan">
                     <a class="link-back button-back button-cta button-draft" href="{{route('dashboard.profil')}}">
-                        Retour
+                        {!! __('messages.auth.register__btn__back')}}
                     </a>
                     @if(auth()->user())
                         <form action="{{route('users.plans')}}" method="get">
                             @csrf
                             <input type="hidden" name="changeCurrentPlan">
                             <button class="button-cta button-upgrade" id="changePlan">
-                                Je change de plan
+                                {!! __('messages.dashboard_workerz.change__plan__btn')}}
                             </button>
                         </form>
                     @endif

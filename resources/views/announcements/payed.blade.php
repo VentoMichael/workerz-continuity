@@ -1,11 +1,50 @@
 @extends('layouts.app')
 @section('content')
     @if (Session::has('success-ads'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">
             <p>{!!session('success-ads')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // TODO: INUTILE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <section class="container-home margin">
         <div class="container-home_image container-home-create container-home-page">
             <div>
@@ -119,12 +158,6 @@
             </section>
 
         </div>
-
-
-
-
-
-
 
     </section>
 @endsection

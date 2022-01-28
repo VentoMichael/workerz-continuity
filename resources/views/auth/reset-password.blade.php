@@ -4,15 +4,15 @@
     <div class="container-home">
         <section class="container-home_image">
             <div class="container-connexion">
-                <h2 aria-level="2">Réinitialisation de votre mot de passe</h2>
-                <p>Ce n'est qu'un oubli, pas de panique&nbsp;!</p>
-                <form aria-label="Modification du mot de passe" role="form" class="form-login" method="POST"
+                <h2 aria-level="2">{!! __('messages.auth.reset__password__title')!!}</h2>
+                <p>{!! __('messages.auth.password__forget__text')!!}</p>
+                <form aria-label="{!! __('messages.auth.reset__label__form')!!}" role="form" class="form-login" method="POST"
                       action="{{ route('password.update') }}">
                     @csrf
                     <input type="hidden" name="token" value="{{ request()->route('token') }}">
                     <div class="container-form-email notVisible">
                         <label for="email"
-                        >Email</label>
+                        >{!! __('messages.auth.email__word')!!}</label>
                         <input id="email" type="email" class="email-label @error('email') is-invalid @enderror"
                                name="email" value="{{ request()->get('email') ?? old('email') }}" required
                                aria-required="true" autocomplete="email" autofocus>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="container-form-email">
                         <label for="password"
-                        >Mot de passe</label>
+                        >{!! __('messages.auth.password__word')!!}</label>
                         <input id="password" type="password"
                                class="email-label @error('password') is-invalid @enderror" name="password" required
                                aria-required="true"
@@ -37,11 +37,11 @@
                                    checked>
                             <div class="password--visibleToggle-eye eye-pass-reset eye-forget-pass open">
                                 <img width="40" height="60" src="{{asset('svg/eye-open.svg')}}"
-                                     alt="icone de yeux ouvert"/>
+                                     alt="{!! __('messages.auth.icon__alt__see__password__open')!!}"/>
                             </div>
                             <div class="password--visibleToggle-eye eye-pass-reset eye-forget-pass close">
                                 <img width="40" height="60" src="{{asset('svg/eye-close.svg')}}"
-                                     alt="icone de yeux fermé"/>
+                                     alt="{!! __('messages.auth.icon__alt__see__password__close')!!}"/>
                             </div>
                         </div>
                         @error('password')
@@ -54,7 +54,7 @@
                         @enderror
                     </div>
                     <div class="container-form-email">
-                        <label for="password-confirm">Confirmer le mot de passe</label>
+                        <label for="password-confirm">{!! __('messages.auth.confirm__password')!!}</label>
 
                         <input id="password-confirm" type="password" class="email-label" name="password_confirmation"
                                required aria-required="true" autocomplete="new-password">
@@ -62,30 +62,30 @@
                     <ul role="list" class="list-password-required list-pass-reset">
                         <li id="cara">
                             <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
-                                 alt="Icone d'un pictogramme v correct">
+                                 alt="{!! __('messages.good__answer')!!}">
                             <p role="listitem">
-                                <span>&bull;</span> 8 caractères
+                                <span>&bull;</span> {!! __('messages.auth.caractere__word')!!}
                             </p>
                         </li>
                         <li id="maj">
                             <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
-                                 alt="Icone d'un pictogramme v correct">
+                                 alt="{!! __('messages.good__answer')!!}">
                             <p role="listitem">
-                                <span>&bull;</span> 1 majuscule
+                                <span>&bull;</span> {!! __('messages.auth.maj__word')!!}
                             </p>
                         </li>
                         <li id="symbole">
                             <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
-                                 alt="Icone d'un pictogramme v correct">
+                                 alt="{!! __('messages.good__answer')!!}">
                             <p role="listitem">
-                                <span>&bull;</span> 1 chiffre
+                                <span>&bull;</span> {!! __('messages.auth.chiffre__word')!!}
                             </p>
                         </li>
                         <li id="same">
                             <img width="40" height="60" src="{{asset('../svg/good.svg')}}"
-                                 alt="Icone d'un pictogramme v correct">
+                                 alt="{!! __('messages.good__answer')!!}">
                             <p role="listitem">
-                                <span>&bull;</span> Identique
+                                <span>&bull;</span> {!! __('messages.auth.same__word')!!}
                             </p>
                         </li>
                     </ul>
@@ -93,7 +93,7 @@
                     <div>
                         <button role="button" type="submit"
                                 class="button-cta">
-                            Réinitialiser le mot de passe
+                            {!! __('messages.auth.reset__password')!!}
                         </button>
                     </div>
                 </form>
@@ -101,7 +101,7 @@
 
             <div class="container-svg">
                 <img width="300" height="300" class="svg-icon" src="{{asset('svg/Settings_Monochromatic.svg')}}"
-                     alt="Icone d'un ordinateur avec un mot de passe crypter">
+                     alt="{!! __('messages.auth.alt__text__password__img')!!}">
             </div>
         </section>
     </div>

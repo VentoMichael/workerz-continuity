@@ -1,5 +1,5 @@
 <div>
     <a href="{{ route('users.plans') }}" role="button" class="button-cta">
-        Je m'inscris
+        {!! __('messages.btn__inscription')!!}
     </a>
 </div>

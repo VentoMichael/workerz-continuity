@@ -2,35 +2,42 @@
 
 @section('content')
     @if (Session::has('messageBanned'))
-        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')!!}">
             <p>{!!session('messageBanned')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('register'))
-        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img style="max-width: 50px;" src="{{asset('svg/question-signe-en-cercles.svg')}}" alt="pictogramme d'une croix rouge">
+        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img style="max-width: 50px;" src="{{asset('svg/question-signe-en-cercles.svg')}}" alt="{{ __('messages.question__mark') }}">
             <p>{!!session('register')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('forbidden'))
-        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img style="max-width: 50px;" src="{{asset('svg/question-signe-en-cercles.svg')}}" alt="pictogramme d'une croix rouge">
+        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img style="max-width: 50px;" src="{{asset('svg/question-signe-en-cercles.svg')}}" alt="{!! __('messages.question__mark')!!}">
             <p>{!!session('forbidden')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-update'))
-        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')!!}">
             <p>{!!session('success-update')!!}</p>
+            <span class="crossHide" id="crossHide">&times;</span>
+        </div>
+    @endif
+
+    @if (Session::has('success-inscription'))
+        <div width="40" height="60" id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/question-signe-en-cercles.svg')}}" alt="{!! __('messages.question__mark')!!}">
+            <p>{!!session('success-inscription')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     <div class="container-home">
         <section class="container-home_image">
             <div class="container-connexion">
-                <h2 aria-level="2">Connexion</h2>
-                <p>Revenez voir les nouveautés&nbsp;!</p>
-                <form class="form-login" aria-label="Connexion" role="form" method="POST" action="{{ route('login') }}">
+                <h2 aria-level="2">{!! ucfirst(__('messages.login__title__h1'))!!}</h2>
+                <p>{!! __('messages.auth.see__news')!!}</p>
+                <form class="form-login" aria-label="{!! ucfirst(__('messages.login__title__h1')) !!}" role="form" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="container-form-email">
                         <label for="email"
@@ -52,16 +59,16 @@
                     <div class="container-login-password">
 
                         <label for="password"
-                        >Mot de passe</label>
+                        >{!! __('messages.auth.password__word')!!}</label>
                         <div class="@error('password')is-invalid @enderror password">
                             <div id="container-checkpass" class="container-checkpass">
-                                <label for="checkPass" class="hidden">Voir/masquer le mot de passe</label>
+                                <label for="checkPass" class="hidden">{!! __('messages.auth.see__hide__password')!!}</label>
                                 <input type="checkbox" tabindex="1" class="password--visibleToggle" id="checkPass" checked>
                                 <div class="password--visibleToggle-eye open">
-                                    <img width="40" height="40" src="{{asset('svg/eye-open.svg')}}" alt="icone de yeux ouvert"/>
+                                    <img width="40" height="40" src="{{asset('svg/eye-open.svg')}}" alt="{!! __('messages.auth.icon__alt__see__password__open')!!}"/>
                                 </div>
                                 <div class="password--visibleToggle-eye close">
-                                    <img width="40" height="40" src="{{asset('svg/eye-close.svg')}}" alt="icone de yeux fermé"/>
+                                    <img width="40" height="40" src="{{asset('svg/eye-close.svg')}}" alt="{!! __('messages.auth.icon__alt__see__password__close')!!}"/>
                                 </div>
                             </div>
 
@@ -82,18 +89,18 @@
                         <div class="inscription-links">
                             @if (Route::has('register'))
                                 <a href="{{ route('users.plans') }}">
-                                    S'inscrire
+                                    {!! __('messages.link__inscription')!!}
                                 </a>
                             @endif
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}">
-                                    Mot de passe oublié&nbsp;?
+                                    {!! __('messages.auth.password__forget')!!}
                                 </a>
                             @endif
                         </div>
                         <div>
                             <button role="button" class="button-cta" type="submit">
-                                Je me connecte
+                                {!! __('messages.link__connexion')!!}
                             </button>
                         </div>
                     </div>
@@ -102,7 +109,7 @@
             </div>
             <div class="container-svg">
                 <img width="300" height="300" class="svg-icon" src="{{asset('svg/Innovation_Monochromatic.svg')}}"
-                     alt="icone d'ampoule">
+                     alt="{!! __('messages.icon__ampoul')!!}">
             </div>
         </section>
     </div>

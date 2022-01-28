@@ -1,13 +1,13 @@
 @extends('layouts.appDashboard')
 @section('content')
     @if (Session::has('success-ads'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">
             <p>{!!session('success-ads')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if($errors->has('message'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}" alt="{!! __('messages.bad__answer')}}">
             <p>{{$errors->first('message')}}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -16,7 +16,7 @@
         @include('partials.navigationDashboard')
         <section class="container-dashboard container-messages">
             <h2 aria-level="2">
-                Mes messages
+                {!! __('messages.mymsg__item__nav')}}
             </h2>
             <div class="container-form-ads container-form-msgs">
                 <livewire:messenger>
@@ -29,17 +29,17 @@
                             <div class="link-next-previous">
                                 @if($messages->hasMorePages())
                                     <div class="@if($messages->previousPageUrl()) noMorePage @endif nextLink-container">
-                                        <a class="nextLink" title="Voir les messages anciens"
+                                        <a class="nextLink" title="{!! __('messages.conversation.see__next__msg')}}"
                                            href="{{ $messages->nextPageUrl() }}">
-                                            Voir les messages suivants
+                                            {!! __('messages.conversation.see__next__msg')}}
                                         </a>
                                     </div>
                                 @endif
                                 @if($messages->previousPageUrl())
                                     <div class="previousLink-container">
-                                        <a class="previousLink" title="Voir les messages récents"
+                                        <a class="previousLink" title="{!! __('messages.conversation.see__previous__msg')}}"
                                            href="{{ $messages->previousPageUrl() }}">
-                                            Voir les messages précedents
+                                            {!! __('messages.conversation.see__previous__msg')}}
                                         </a>
                                     </div>
                                 @endif
@@ -49,7 +49,7 @@
                     <section class="container-messages-all" id="container-message">
                         <div class="container-helper-message">
                             <h4 aria-level="4">
-                                <span class="hidden"> Utilisateur sélectionné </span>{{$user->name}} {{$user->surname}}
+                                <span class="hidden"> {!! __('messages.conversation.selected__user')}}</span>{{$user->name}} {{$user->surname}}
                             </h4>
                         </div>
                         @foreach($messages as $message)
@@ -59,15 +59,15 @@
                                     <div class="container-picture-message">
                                         @if($message->user->picture)
                                             <img width="40" height="60" itemprop="image" src="{{ asset($message->user->picture) }}"
-                                                 alt="photo de profil de {{ucfirst($message->user->name)}}"/>
+                                                 alt="{!! __('messages.ads.label__picture')}} {{ucfirst($message->user->name)}}"/>
                                         @else
                                             <img width="40" height="60" itemprop="image" src="{{asset('svg/user.svg')}}"
-                                                 alt="icone d'annonces">
+                                                 alt="{!! __('messages.ads.icone__ads__alt')}}">
                                         @endif
                                     </div>
                                     <div>
                                         <p class="date-message"> @if($message->receiver->id == $user->id)
-                                                Moi,  @else {{$message->user->name}} {{$message->user->surname}}, @endif {{$message->created_at->locale('fr')->isoFormat('Do MMMM, H:mm')}}</p>
+                                                {!! __('messages.conversation.word__me')}} @else {{$message->user->name}} {{$message->user->surname}}, @endif {{$message->created_at->locale('en')->isoFormat('Do MMMM, H:mm')}}</p>
                                         <p class="content-message">{{$message->content}}</p>
                                     </div>
                                 </div>
@@ -75,18 +75,18 @@
                         @endforeach
                     </section>
                     <form id="formMsg" class="form-login" style="position: relative" enctype="multipart/form-data"
-                          aria-label="Envoie d'un message à {{$user->name}}" role="form" method="POST"
+                          aria-label="{!! __('messages.conversation.send__msg__to')}}{{$user->name}}" role="form" method="POST"
                           action="{{route('messages.post',[$user->slug])}}">
                         @csrf
 
-                        <label for="message" class="hidden">Entrer votre message</label>
+                        <label for="message" class="hidden">{!! __('messages.conversation.put__msg')}}</label>
                         <textarea type="text" class="input-message @if($errors->has('message')) is-invalid @endif"
-                                  placeholder="Votre message ..." name="message"
+                                  placeholder="{!! __('messages.conversation.placeholder__form')}}" name="message"
                                   id="message"></textarea>
 
                         <input type="hidden" name="from_id" id="from_id" value="{{auth()->user()->id}}">
                         <input type="hidden" name="to_id" id="to_id" value="{{$user->id}}">
-                        <button type="submit" id="btnMsgSend" class="submit-message" title="Envoyer le message à {{$user->name}}"><span class="helpSendMsg" id="helpMsg">Ctrl + Enter</span></button>
+                        <button type="submit" id="btnMsgSend" class="submit-message" title="{!! __('messages.conversation.send__msg')}} {{$user->name}}"><span class="helpSendMsg" id="helpMsg">Ctrl + Enter</span></button>
 
                         @error('message')
                         <p class="danger help"

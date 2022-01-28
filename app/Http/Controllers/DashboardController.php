@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Mail\AdsEarlyExpire;
@@ -16,6 +17,7 @@ use App\Models\StartMonth;
 use App\Models\User;
 use App\Models\Website;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,8 +34,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-                $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $this->sendExpireNotificationAccount();
         $messages = Message::where('to_id', '=', \auth()->user()->id)->with('user')->orderByDesc('created_at',
             'ASC')->take(3)->get();
@@ -42,13 +45,31 @@ class DashboardController extends Controller
             'DESC')->orderBy('created_at', 'DESC')->take(3)->get();
         $notifications = tap(\auth()->user()->unreadNotifications)->markAsRead()->take(3);
 
-        return view('dashboard.index', compact('notifications','notificationsReaded', 'lastAnnouncements', 'messages','noReadMsgs'));
+        return view('dashboard.index', compact('notifications', 'notificationsReaded', 'lastAnnouncements', 'messages', 'noReadMsgs'));
     }
 
     public function profil()
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-        $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+        $stripe = new \Stripe\StripeClient(
+            'sk_test_51IsQzZInyQIkM7VRTENb5kOpiemA7LlBZ3iO4pAokXaydf9ZHjL9UycPh675MI1MO8tfRRm1RuyPaLy59xJ58m53002oJzC7SL'
+        );
+        $customers = $stripe->customers->all()['data'];
+        $subscriptions = $stripe->subscriptions->all()['data'];
+        foreach ($customers as $customer) {
+            $cusId = $customer->id;
+        }
+
+        foreach ($subscriptions as $subscription) {
+            $subscriptionId = $subscription->id;
+        }
+        if ($subscription->customer === $cusId) {
+            $realSub = $stripe->subscriptions->retrieve(
+                $subscriptionId,
+                []
+            );
+        }
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $this->sendExpireNotificationAccount();
         $disponibilities = auth()->user()->startDate;
         $regions = auth()->user()->provinces;
@@ -56,7 +77,7 @@ class DashboardController extends Controller
         $this->sendExpireNotificationAccount();
         $planId = auth()->user()->plan_user_id;
         $plan = \App\Models\PlanUser::where('id', '=', $planId)->first();
-        return view('dashboard.profil', compact('plan','notificationsReaded', 'disponibilities', 'categories', 'regions','noReadMsgs'));
+        return view('dashboard.profil', compact('plan', 'realSub', 'notificationsReaded', 'disponibilities', 'categories', 'regions', 'noReadMsgs'));
     }
 
     public function updateUser(Request $request)
@@ -65,9 +86,9 @@ class DashboardController extends Controller
         $this->sendExpireNotificationAccount();
         $user = \auth()->user();
         $request->validate([
-            'name' => 'sometimes|string|max:255',Rule::unique('users')->ignore(\auth()->id()),
+            'name' => 'sometimes|string|max:255', Rule::unique('users')->ignore(\auth()->id()),
             'surname' => 'sometimes|string|max:255',
-            'number'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:14',
+            'number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:7|max:14',
             'email' => 'sometimes|required|string|max:255', Rule::unique('users')->ignore($user->id),
             'picture' => 'sometimes|image|mimes:jpg,png,jpeg|max:2048',
         ]);
@@ -87,8 +108,8 @@ class DashboardController extends Controller
             $pic = Image::make(\request()->file('picture'))->resize(null, 200, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save(public_path('users/'.$filename));
-            $user->picture = 'users/'.$filename;
+            })->save(public_path('users/' . $filename));
+            $user->picture = 'users/' . $filename;
         }
 
         if ($user->plan_user_id !== 1) {
@@ -107,7 +128,7 @@ class DashboardController extends Controller
                 'instagram' => 'sometimes|nullable', 'url',
                 'linkedin' => 'sometimes|nullable', 'url',
                 'locationthree' => 'sometimes|not_in:0',
-                'categoryUser' => 'sometimes|required|array|max:'.$user->plan_user_id,
+                'categoryUser' => 'sometimes|required|array|max:' . $user->plan_user_id,
                 'disponibilites' => [
                     'sometimes|array|max:7',
                 ],
@@ -159,16 +180,22 @@ class DashboardController extends Controller
         ]);
         $user->save();
         if ($user->wasChanged()) {
-            Session::flash('success-update', 'Votre profil a bien été mis a jour&nbsp;!');
+            if (Session::get('applocale') === 'en') {
+                Session::flash('success-update', 'Your profile has been updated!');
+            } elseif (Session::get('applocale') === 'nl') {
+                Session::flash('success-update', 'Je profiel is bijgewerkt!');
+            } else {
+                Session::flash('success-update', 'Votre profil a bien été mis a jour&nbsp;!');
+            }
         }
-        return redirect(route('dashboard.profil',compact('plan')));
+        return redirect(route('dashboard.profil', compact('plan')));
 
     }
 
     public function settings()
     {
-        $notificationsReaded = auth()->user()->notifications->where('read_at',null);
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
         $this->sendExpireNotificationAccount();
         $user_categories = auth()->user()->categoryUser;
         $user_disponibilities = auth()->user()->startDate;
@@ -177,35 +204,35 @@ class DashboardController extends Controller
         $categories = Category::orderBy('name')->get();
         $plan = \auth()->user()->plan_user_id;
         return view('dashboard.edit',
-            compact('disponibilities','notificationsReaded','plan', 'categories', 'regions', 'user_categories', 'user_disponibilities','noReadMsgs'));
+            compact('disponibilities', 'notificationsReaded', 'plan', 'categories', 'regions', 'user_categories', 'user_disponibilities', 'noReadMsgs'));
     }
 
     public function show(Announcement $announcement)
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-        $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $this->sendExpireNotificationAds();
         $this->sendExpireNotificationAccount();
         $firstAd = Auth::user()->announcements()->NotDraft()->firstOrFail();
         $user = User::where('id', '=', \auth()->user()->id)->with('announcements')->firstOrFail();
         $announcement = Announcement::withLikes()->where('id', '=', $announcement->id)->firstOrFail();
-        return view('dashboard.show', compact('announcement','notificationsReaded','noReadMsgs', 'user', 'firstAd'));
+        return view('dashboard.show', compact('announcement', 'notificationsReaded', 'noReadMsgs', 'user', 'firstAd'));
     }
 
     public function showDraft(Announcement $announcement)
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-                $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $firstAdDraft = Auth::user()->announcements()->Draft()->firstOrFail();
         $user = User::where('id', '=', \auth()->user()->id)->with('announcements')->firstOrFail();
         $announcement = Announcement::withLikes()->where('id', '=', $announcement->id)->firstOrFail();
-        return view('dashboard.draftAd', compact('announcement','notificationsReaded','noReadMsgs', 'user', 'firstAdDraft'));
+        return view('dashboard.draftAd', compact('announcement', 'notificationsReaded', 'noReadMsgs', 'user', 'firstAdDraft'));
     }
 
     public function editAdsDraft(Announcement $announcement)
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-                $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $plan = $announcement->plan_announcement_id;
         $categories = Category::all();
         $regions = Province::all();
@@ -213,14 +240,14 @@ class DashboardController extends Controller
         $announcement_categories = $announcement->categoryAds;
         $announcement_disponibilities = $announcement->startMonth;
         return view('dashboard.updateAdsDraft',
-            compact( 'announcement','categories','notificationsReaded', 'regions', 'plan', 'disponibilities',
-                'announcement_categories','noReadMsgs', 'announcement_disponibilities'));
+            compact('announcement', 'categories', 'notificationsReaded', 'regions', 'plan', 'disponibilities',
+                'announcement_categories', 'noReadMsgs', 'announcement_disponibilities'));
     }
 
     public function editAds(Announcement $announcement)
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-                $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $this->sendExpireNotificationAds();
         $this->sendExpireNotificationAccount();
         $plan = $announcement->plan_announcement_id;
@@ -230,7 +257,7 @@ class DashboardController extends Controller
         $announcement_categories = $announcement->categoryAds;
         $announcement_disponibilities = $announcement->startMonth;
         return view('dashboard.updateAds', compact('announcement', 'categories', 'regions', 'plan', 'disponibilities',
-                'announcement_categories','noReadMsgs','notificationsReaded', 'announcement_disponibilities'));
+            'announcement_categories', 'noReadMsgs', 'notificationsReaded', 'announcement_disponibilities'));
     }
 
     public function updateAds(Announcement $announcement, Request $request)
@@ -242,7 +269,7 @@ class DashboardController extends Controller
             'location' => 'sometimes|not_in:0|required',
             'pricemax' => 'numeric|max:999999|nullable|sometimes',
             'startmonth' => 'sometimes|required',
-            'categoryAds' => 'sometimes|array|required|max:'.$announcement->plan_announcement_id
+            'categoryAds' => 'sometimes|array|required|max:' . $announcement->plan_announcement_id
         ]);
 
         if ($request->has('publish')) {
@@ -257,7 +284,13 @@ class DashboardController extends Controller
                 $announcement->is_payed = 1;
                 $announcement->end_plan = Carbon::now()->addDays(7)->addHours(2);
                 $announcement->update();
-                Session::flash('success-update', 'Votre annonce a bien été publié&nbsp;!');
+                if (Session::get('applocale') === 'en') {
+                    Session::flash('success-update', 'Your ad has been published!');
+                } elseif (Session::get('applocale') === 'nl') {
+                    Session::flash('success-update', 'Uw advertentie is gepubliceerd!');
+                } else {
+                    Session::flash('success-update', 'Votre annonce a bien été publié&nbsp;!');
+                }
                 return \redirect(route('dashboard.ads'));
             }
         }
@@ -282,38 +315,62 @@ class DashboardController extends Controller
             $img = Image::make($request->file('picture'))->resize(null, 200, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save(public_path('ads/'.$filename));
-            $announcement->picture = 'ads/'.$filename;
+            })->save(public_path('ads/' . $filename));
+            $announcement->picture = 'ads/' . $filename;
         }
         $announcement->plan_announcement_id = $announcement->getOriginal('plan_announcement_id');
         $announcement->update();
         if ($announcement->wasChanged()) {
-            Session::flash('success-update', 'Votre annonce a bien été mis a jour&nbsp;!');
+
+            if (Session::get('applocale') === 'en') {
+                Session::flash('success-update', 'Your ad has been updated!');
+            } elseif (Session::get('applocale') === 'nl') {
+                Session::flash('success-update', 'Uw advertentie is bijgewerkt!');
+            } else {
+                Session::flash('success-update', 'Votre annonce a bien été mis a jour&nbsp;!');
+            }
+
         } else {
-            Session::flash('success-update-not', 'Rien n\'a été changé&nbsp;!');
+
+            if (Session::get('applocale') === 'en') {
+                Session::flash('success-update-not', 'Nothing has been changed!');
+            } elseif (Session::get('applocale') === 'nl') {
+                Session::flash('success-update-not', 'Er is niets veranderd!');
+            } else {
+                Session::flash('success-update-not', 'Rien n\'a été changé&nbsp;!');
+            }
+
         }
-        if ($announcement->is_draft === 1){
-            return redirect('dashboard/ads/draft/'.$announcement->slug);
-        }else{
-            return redirect('dashboard/ads/'.$announcement->slug);
+        if ($announcement->is_draft === 1) {
+            return redirect('dashboard/ads/draft/' . $announcement->slug);
+        } else {
+            return redirect('dashboard/ads/' . $announcement->slug);
         }
     }
 
     public function deleteAds(Announcement $announcement)
     {
         Announcement::where('id', '=', $announcement->id)->delete();
-        return Redirect::route('dashboard.ads')->with('success-delete', 'Annonce supprimée&nbsp!');
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = 'Deleted ad&nbsp!';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = 'Advertentie verwijderd&nbsp!';
+        } else {
+            $msgSuccess = 'Annonce supprimée&nbsp!';
+        }
+        return Redirect::route('dashboard.ads')->with('success-delete', $msgSuccess);
     }
 
     public function ads(Announcement $announcement)
     {
-        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read',0)->where('content','!==',null));
-        $notificationsReaded = auth()->user()->notifications->where('read_at',null);
+        $noReadMsgs = count(auth()->user()->talkedTo->where('is_read', 0)->where('content', '!==', null));
+        $notificationsReaded = auth()->user()->notifications->where('read_at', null);
         $this->sendExpireNotificationAccount();
         $firstAd = Auth::user()->announcements()->NotDraft()->first();
         $firstAdDraft = Auth::user()->announcements()->Draft()->first();
-        return view('dashboard.ads', compact('firstAd','notificationsReaded','noReadMsgs', 'firstAdDraft'));
+        return view('dashboard.ads', compact('firstAd', 'notificationsReaded', 'noReadMsgs', 'firstAdDraft'));
     }
+
     protected function sendExpireNotificationAccount()
     {
         if (auth()->user()->end_plan < Carbon::now()->addHours(2)->subDays(1) && auth()->user()->sending_time_expire == 1) {
@@ -324,7 +381,15 @@ class DashboardController extends Controller
                 auth()->user()->save();
                 Mail::to(env('MAIL_FROM_ADDRESS'))
                     ->send(new AdsEarlyExpire(auth()->user()));
-                Session::flash('expire', 'Attention, votre compte va expirer dans un jour&nbsp;!');
+
+                if (Session::get('applocale') === 'en') {
+                    Session::flash('expire', 'Attention, your account will expire in one day!');
+                } elseif (Session::get('applocale') === 'nl') {
+                    Session::flash('expire', 'Attentie, uw account vervalt over één dag!');
+                } else {
+                    Session::flash('expire', 'Attention, votre compte va expirer dans un jour&nbsp;!');
+                }
+
             }
         }
         if (auth()->user()->end_plan <= Carbon::now()) {
@@ -344,7 +409,15 @@ class DashboardController extends Controller
                     $adsExpire->update();
                     Mail::to(auth()->user()->email)
                         ->send(new AdsEarlyExpire($adsExpire));
-                    Session::flash('expire', 'Attention, une de vos annonce va expirer dans un jour&nbsp;!');
+
+                    if (Session::get('applocale') === 'en') {
+                        Session::flash('expire', 'Attention, one of your ads will expire in one day!');
+                    } elseif (Session::get('applocale') === 'nl') {
+                        Session::flash('expire', 'Attentie, één van uw advertenties vervalt over één dag!');
+                    } else {
+                        Session::flash('expire', 'Attention, une de vos annonce va expirer dans un jour&nbsp;!');
+                    }
+
                 }
             }
             if ($adsExpire->end_plan <= Carbon::now()->addHours(2)) {
@@ -354,5 +427,85 @@ class DashboardController extends Controller
                 $adsExpire->update();
             }
         }
+    }
+
+    public function activateSubscription()
+    {
+        $stripe = new \Stripe\StripeClient(
+            'sk_test_51IsQzZInyQIkM7VRTENb5kOpiemA7LlBZ3iO4pAokXaydf9ZHjL9UycPh675MI1MO8tfRRm1RuyPaLy59xJ58m53002oJzC7SL'
+        );
+        $customers = $stripe->customers->all()['data'];
+        $subscriptions = $stripe->subscriptions->all()['data'];
+        foreach ($customers as $customer) {
+            $cusId = $customer->id;
+        }
+
+        foreach ($subscriptions as $subscription) {
+            $subscriptionId = $subscription->id;
+        }
+        if ($subscription->customer === $cusId) {
+            $realSub = $stripe->subscriptions->retrieve(
+                $subscriptionId,
+                []
+            );
+        }
+        $value = $subscription->current_period_end;
+
+        $date = Carbon::parse($value)->locale('en')->addHours(4)->isoFormat('Do MMMM YYYY, H:mm');
+
+        \Stripe\Stripe::setApiKey('sk_test_51IsQzZInyQIkM7VRTENb5kOpiemA7LlBZ3iO4pAokXaydf9ZHjL9UycPh675MI1MO8tfRRm1RuyPaLy59xJ58m53002oJzC7SL');
+        \Stripe\Subscription::update(
+            $realSub->id,
+            [
+                'cancel_at_period_end' => false,
+            ]
+        );
+        if (Session::get('applocale') === 'en') {
+            Session::flash('success-update', 'Your subscription has been reactivated and will be renewed on');
+        } elseif (Session::get('applocale') === 'nl') {
+            Session::flash('success-update', 'Uw abonnement is opnieuw geactiveerd en zal worden vernieuwd op');
+        } else {
+            Session::flash('success-update', 'Votre abonnement a bien été réactiver et se renouvelera le ' . $date);
+        }
+        return \redirect(route('dashboard.profil'));
+    }
+
+    public function cancelSubscription()
+    {
+        $stripe = new \Stripe\StripeClient(
+            'sk_test_51IsQzZInyQIkM7VRTENb5kOpiemA7LlBZ3iO4pAokXaydf9ZHjL9UycPh675MI1MO8tfRRm1RuyPaLy59xJ58m53002oJzC7SL'
+        );
+        $customers = $stripe->customers->all()['data'];
+        $subscriptions = $stripe->subscriptions->all()['data'];
+        foreach ($customers as $customer) {
+            $cusId = $customer->id;
+        }
+
+        foreach ($subscriptions as $subscription) {
+            $subscriptionId = $subscription->id;
+        }
+        if ($subscription->customer === $cusId) {
+            $realSub = $stripe->subscriptions->retrieve(
+                $subscriptionId,
+                []
+            );
+        }
+        $value = $subscription->current_period_end;
+        $date = Carbon::parse($value)->locale('en')->addHours(4)->isoFormat('Do MMMM YYYY, H:mm');
+        \Stripe\Stripe::setApiKey('sk_test_51IsQzZInyQIkM7VRTENb5kOpiemA7LlBZ3iO4pAokXaydf9ZHjL9UycPh675MI1MO8tfRRm1RuyPaLy59xJ58m53002oJzC7SL');
+        \Stripe\Subscription::update(
+            $realSub->id,
+            [
+                'cancel_at_period_end' => true,
+            ]
+        );
+        if (Session::get('applocale') === 'en') {
+            Session::flash('success-update', 'Your subscription has been cancelled and will end on');
+        } elseif (Session::get('applocale') === 'nl') {
+            Session::flash('success-update', 'Uw abonnement is geannuleerd en zal eindigen op');
+        } else {
+            Session::flash('success-update', 'Votre abonnement a bien été résilier il prendra fin le ' . $date);
+        }
+        return \redirect(route('dashboard.profil'));
     }
 }

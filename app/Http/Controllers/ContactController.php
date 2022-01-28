@@ -58,8 +58,14 @@ class ContactController extends Controller
             ->send(new ContactMe($data));
         Mail::to($data['email'])
             ->send(new ContactUser($data));
-        return Redirect::to(URL::previous()."#createMsg")->with('success-send', 'Votre message a été envoyé avec succès.
-        Nous vous contacterons bientôt&nbsp!');
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = 'Your message has been sent successfully. We will contact you soon!';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = 'Uw bericht is succesvol verzonden. Wij zullen spoedig contact met u opnemen!';
+        } else {
+            $msgSuccess = 'Votre message a été envoyé avec succès. Nous vous contacterons bientôt&nbsp!';
+        }
+        return Redirect::to(URL::previous()."#createMsg")->with('success-send', $msgSuccess);
     }
 
 }

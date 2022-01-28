@@ -3,21 +3,21 @@
         @include('partials.newsletter')
     @endif
     <div class="container-search hideForNewsletter">
-        <form action="{{route('workers')}}" aria-label="Recherche d'indépendants" role="search" method="get"
+        <form action="{{route('workers')}}" aria-label="{!! __('messages.home.arialabel__form__search__user')!!}" role="search" method="get"
               class="formSearchAd">
-            <label for="search" class="hidden">Recherche d'entreprises</label>
+            <label for="search" class="hidden">{!! __('messages.home.arialabel__form__search__user')!!}</label>
             <input type="text" name="search" value="{{request('search')}}" id="search" wire:model="search"
-                   placeholder="Quel métier recherchez-vous ?"
+                   placeholder="{!! __('messages.ads.job__search')!!}"
                    class="search-announcement search-home">
             <noscript>
-                <input type="submit" class="submit-category-home submit-ad" value="Recherchez">
+                <input type="submit" class="submit-category-home submit-ad" value="{!! __('messages.ads.btn__send__form__livewire')!!}">
             </noscript>
         </form>
-        @if($helpText !== '') <span style="margin-top: 10px;">{{$helpText}}</span>@endif
+        @if($helpText !== '') <span style="margin-top: 10px;">{!! __('messages.helpText')!!}</span>@endif
     </div>
     <section class="container-announcements show-content hideForNewsletter" id="workerz-section">
         <h2 class="hidden" aria-level="2">
-            Toutes les entreprises
+            {!! __('messages.conversation.all__companies')!!}
         </h2>
         <div class="container-all-announcement show-content @if($workerz->count() < 1) noAds @endif">
             @forelse($workerz as $worker)
@@ -29,29 +29,29 @@
                                 <div
                                     class="containerPrice container-show-love like-users-connected containerLove like-index help-show @guest notHoverHeart @endguest">
                                     @if(!$worker->isLikedUBy($worker))
-                                        <form method="POST" title="Mettre un j'aime à {{$worker->name}}"
-                                              aria-label="Mettre un j'aime à {{$worker->name}}"
+                                        <form method="POST" title="{!! __('messages.ads.label__put__like__livewire')!!} {{$worker->name}}"
+                                              aria-label="{!! __('messages.ads.label__put__like__livewire')!!} {{$worker->name}}"
                                               action="/workers/{{$worker->slug}}/like">
                                             @csrf
 
                                             <button type="submit" class="button-loves">
                                                 <img class="heart" src="{{asset('svg/heart.svg')}}"
-                                                     alt="Mettre un j'aime à {{$worker->name}}">
+                                                     alt="{!! __('messages.ads.label__put__like__livewire')!!} {{$worker->name}}">
                                                 <img class="heartFul" src="{{asset('svg/heartFul.svg')}}"
-                                                     alt="Le j'aime à déjà été attribuer à {{$worker->name}}">
+                                                     alt="{!! __('messages.ads.label__put__alreadylike__livewire')!!} {{$worker->name}}">
                                                 <span>
                                         {{$worker->likes ? : 0}}</span></button>
                                         </form>
                                     @else
 
-                                        <form method="POST" title="Enlever le j'aime donner à {{$worker->name}}"
-                                              aria-label="Enlever le j'aime donner à {{$worker->name}}"
+                                        <form method="POST" title="{!! __('messages.ads.label__remove__like__livewire')!!} {{$worker->name}}"
+                                              aria-label="{!! __('messages.ads.label__remove__like__livewire')!!} {{$worker->name}}"
                                               action="/workers/{{$worker->slug}}/like">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="button-loves">
                                                 <img class="heartFul heartLiked" src="{{asset('svg/heartFul.svg')}}"
-                                                     alt="Enlever le j'aime attribué à {{$worker->title}}">
+                                                     alt="{!! __('messages.ads.label__remove__like__livewire')!!} {{$worker->title}}">
                                                 <span>
                                         {{$worker->likes ? : 0}}</span></button>
                                         </form>
@@ -61,11 +61,11 @@
                             @else
                                 <form action="{{route('login')}}">
                                     <button style="border: none;max-height: inherit" name="registerRequired"
-                                            title="Il faut se connecter pour mettre un j'aime à {{$worker->name}}"
+                                            title="{!! __('messages.ads.label__connexion__required__livewire')!!} {{$worker->name}}"
                                             class="containerPrice containerLove like-users like-index hepling helping-like help-show">
-                                        <img class="heart" src="{{asset('svg/heart.svg')}}" alt="icone de coeur vide">
+                                        <img class="heart" src="{{asset('svg/heart.svg')}}" alt="{!! __('messages.ads.label__empty__like__livewire')!!}">
                                         <img class="heartFul" src="{{asset('svg/heartFul.svg')}}"
-                                             alt="icone de coeur remplis">
+                                             alt="{!! __('messages.ads.label__fullheart__like__livewire')!!}">
                                         <p>
                                             {{$worker->likes? : 0}}</p>
                                     </button>
@@ -74,16 +74,16 @@
                         </div>
                         @if($worker->pricemax)
                             <div class="containerPrice" itemscope itemtype="https://schema.org/PriceSpecification">
-                                <img src="{{asset('svg/euro.svg')}}" alt="icone d'euro">
+                                <img src="{{asset('svg/euro.svg')}}" alt="{!! __('messages.ads.icone__euro__livewire')!!}">
                                 <span itemprop="price">{{$worker->pricemax}} €/h</span>
                             </div>
                         @endif
                         <div class="container-image-announcement container-profil-img">
                             @if($worker->picture)
                                 <img src="{{ $worker->picture }}"
-                                     alt="image de profil de {{$worker->name}} @if($worker->surname) {{$worker->surname}} @endif">
+                                     alt="{!! __('messages.ads.alt__profil__img')!!} {{$worker->name}} @if($worker->surname) {{$worker->surname}} @endif">
                             @else
-                                <img src="{{asset('svg/market.svg')}}" alt="icone d'un magasin">
+                                <img src="{{asset('svg/market.svg')}}" alt="{!! __('messages.ads.icone__ads__alt')!!}">
                             @endif
                         </div>
                         <div class="container-description-Ads">
@@ -96,19 +96,19 @@
                             </p>
                             <div class="container-infos">
                                 <div class="container-info-announcement">
-                                    <img src="{{asset('svg/suitcase.svg')}}" alt="icone de malette de travail">
+                                    <img src="{{asset('svg/suitcase.svg')}}" alt="{!! __('messages.ads.icone__wallet__livewire')!!}">
                                     <div class="containerJobAds" itemprop="jobTitle">
                                         <p>{{ucfirst($worker->job)}}</p>
                                         @if($worker->categoryUser->count())
                                             <p class="categoryJob">
-                                                (@foreach($worker->categoryUser as $w){{ucfirst($w->name)}}{{ ($loop->last ? '' : ', ') }}@endforeach)
+                                                (@foreach($worker->categoryUser as $w)@if(Session::get('applocale') === 'en'){{$w->name_en}}{{ ($loop->last ? ')' : ', ') }}@elseif(Session::get('applocale') === 'nl'){{$w->name_nl}}{{ ($loop->last ? ')' : ', ') }}@else{{$w->name}}{{ ($loop->last ? ')' : ', ') }}@endif @endforeach
                                             </p>
                                         @endif
                                     </div>
                                 </div>
                                 @if($worker->adresses->count())
                                     <div class="container-info-announcement">
-                                        <img src="{{asset('svg/placeholder.svg')}}" alt="icone de localité">
+                                        <img src="{{asset('svg/placeholder.svg')}}" alt="{!! __('messages.ads.icone__locality__livewire')!!}">
                                         <div class="container-location" itemprop="address">
                                             <p>{{ucfirst($worker->adresses->first()->postal_adress)}}</p>
                                             @if(ucfirst($worker->adresses->first()->postal_adress))
@@ -133,38 +133,38 @@
                                                value="{{$worker->id}}">
                                         <input type="hidden" name="slug" id="slug{{$loop->index}}"
                                                value="{{$worker->slug}}">
-                                        <button type="submit" class="formsendmsg formsenmsg-show-view-Notauth button-cta button-msg" title="Parler avec {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}" name="talkTo">
-                                            Parler avec {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}
+                                        <button type="submit" class="formsendmsg formsenmsg-show-view-Notauth button-cta button-msg" title="{!! __('messages.ads.talk__text__livewire')!!} {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}" name="talkTo">
+                                            {!! __('messages.ads.talk__text__livewire')!!} {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}
                                         </button>
                                     </form>
                                 @endif
                             @else
                                 <form action="{{route('login')}}">
                                     <button name="registerRequired"
-                                            title="Il faut se connecté pour parler avec {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}"
+                                            title="{!! __('messages.ads.connexion__required__talk')!!} {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}"
                                             class="formsendmsg formsenmsg-show-view-Notauth button-cta button-msg">
-                                        Parler
-                                        avec {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}                            </button>
+                                        {!! __('messages.ads.talk__with')!!} {{ucfirst($worker->name)}} {{ucfirst($worker->surname)}}
+                                    </button>
                                 </form>
                             @endauth
                         @endif
-                        <a href="/workers/{{$worker->slug}}" title="Voir les détails de {{ucfirst($worker->name)}}" class="button-personnal-announcement">
-                            Voir les détails de {{ucfirst($worker->name)}}
+                        <a href="/workers/{{$worker->slug}}" title="{!! __('messages.ads.see__details__alt')!!}{{ucfirst($worker->name)}}" class="button-personnal-announcement">
+                            {!! __('messages.ads.see__details__alt')!!}{{ucfirst($worker->name)}}
                         </a>
                     </div>
                 </section>
             @empty
                 <section wire:loading.class="load" class="container-announcement container-empty-ad">
                     <div class="container-infos-announcement">
-                        <img src="{{asset('svg/not-found.svg')}}" alt="Pictogramme d'une ampoule">
+                        <img src="{{asset('svg/not-found.svg')}}" alt="{!! __('messages.ads.light__alt__img')!!}">
                         <h3 aria-level="3">
-                            Aucun indépendant trouvé avec cette recherche
+                            {!! __('messages.no__indep__text')!!}
                         </h3>
                         <p class="containerAllText" style="margin-top: 10px;">
-                            Oops, je n'ai rien trouvé @if($search)avec cette recherche <i>"{{$search}}"</i>@endif&nbsp;!
-                            Essayez une autre recherche ou <a
+                            {!! __('messages.ads.no__ads__text__one')!!} @if($search){!! __('messages.ads.no__ads__text__two')!!} <i>"{{$search}}"</i>@endif&nbsp;!
+                            {!! __('messages.ads.no__ads__text__three')!!} <a
                                 style="text-decoration: underline;"
-                                href="{{route('workers').'#adsLink'}}">rafraichissez la page</a>
+                                href="{{route('workers').'#adsLink'}}">{!! __('messages.ads.no__ads__text__fourth')!!}</a>
                         </p>
                     </div>
                 </section>
@@ -172,18 +172,18 @@
             {{ $workerz->links() }}
         </div>
         <div class="container-filters container-filters-workerz">
-            <form aria-label="Filtrage d'indépendants" action="{{route('workers')}}" method="get">
+            <form aria-label="{!! __('messages.filtrage__ind')!!}" action="{{route('workers')}}" method="get">
                 <section>
                     <h2 aria-level="2">
-                        Filtres
+                        {!! __('messages.ads.title__filters')!!}
                     </h2>
                     <section class="container-filter-categories">
                         <h3 aria-level="3">
-                            Catégories
+                            {!! __('messages.ads.title__category')!!}
                         </h3>
                         <ul class="list-categories">
                             <fieldset>
-                                <legend class="hidden">Catégories</legend>
+                                <legend class="hidden">{!! __('messages.ads.title__category')!!}</legend>
                                 @foreach($categories as $category)
                                     <li>
                                         <input
@@ -199,7 +199,13 @@
               <polyline points="1 5 4 8 11 1"></polyline>
             </svg>
         </span>
-                                            <span>{{$category->name}}</span>
+                                            @if(Session::get('applocale') === 'en')
+                                                <span>{{$category->name_en}}</span>
+                                            @elseif(Session::get('applocale') === 'nl')
+                                                <span>{{$category->name_nl}}</span>
+                                            @else
+                                                <span>{{$category->name}}</span>
+                                            @endif
                                         </label>
                                     </li>
                                 @endforeach
@@ -208,11 +214,11 @@
                     </section>
                     <section class="container-filter-categories">
                         <h3 aria-level="3">
-                            Régions
+                            {!! __('messages.ads.title__region')!!}
                         </h3>
                         <ul class="list-categories">
                             <fieldset>
-                                <legend class="hidden">Régions</legend>
+                                <legend class="hidden">{!! __('messages.ads.title__region')!!}</legend>
                                 @foreach($regions as $region)
                                     <li>
                                         <input
@@ -228,7 +234,13 @@
 <polyline points="1 5 4 8 11 1"></polyline>
 </svg>
 </span>
-                                            <span>{{$region->name}}</span>
+                                            @if(Session::get('applocale') === 'en')
+                                                <span>{{$region->name_en}}</span>
+                                            @elseif(Session::get('applocale') === 'nl')
+                                                <span>{{$region->name_nl}}</span>
+                                            @else
+                                                <span>{{$region->name}}</span>
+                                            @endif
                                         </label>
                                     </li>
                                 @endforeach
@@ -237,7 +249,7 @@
                     </section>
                     <noscript>
                         <button class="apply-filter-btn">
-                            Appliquer les filtres
+                            {!! __('messages.ads.btn__filters')!!}
                         </button>
                     </noscript>
                 </section>

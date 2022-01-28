@@ -30,7 +30,14 @@ class AdsCreatedUser extends Mailable
      */
     public function build()
     {
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = 'Your new ad is online';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = 'Uw nieuwe advertentie staat online';
+        } else {
+            $msgSuccess = 'Votre nouvelle annonce est en ligne';
+        }
         return $this->markdown('emails.ads-for-user')->with('data',
-            $this->data)->subject('Votre nouvelle annonce est en ligne');
+            $this->data)->subject($msgSuccess);
     }
 }

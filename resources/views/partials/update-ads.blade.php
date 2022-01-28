@@ -1,19 +1,19 @@
 <div class="container-register-form container-register">
     <div class="container-form-email">
-        <label for="catchPhrase">Phrase d'accroche</label>
+        <label for="catchPhrase">{!! __('messages.dashboard_workerz.sentence__accroche')!!}</label>
         <input type="text" id="catchPhrase"
                @if(auth()->user()) value="{{$announcement->catchPhrase}}"
                @else value="{{old("catchPhrase")}}" @endif
                class="email-label" name="catchPhrase"
-               placeholder="Une entreprise qui vous satisfera">
+               placeholder="{!! __('messages.ads.placeholder__catch__update')!!}">
         <p class="help informations">
-            Attirer la clientèle à votre façon (optionnel)
+            {!! __('messages.ads.help__catch')!!}
         </p>
     </div>
     <div class="container-form-email">
         <div class="avatar-container">
-            <label for="picture">Photo de profil</label>
-            <img width="150" height="150" id="output" class="preview-picture" alt="photo du commerce"/>
+            <label for="picture">{!! __('messages.dashoard_workerz.profil__picture')!!}</label>
+            <img width="150" height="150" id="output" class="preview-picture" alt="{!! __('messages.dashboard_workerz.profil__picture')!!}"/>
         </div>
         <input type="file"
                id="picture"
@@ -29,11 +29,11 @@
 </div>
 <div class="container-register-form container-register">
     <div class="container-form-email category-input container-title-ad">
-        <label for="title">Titre <span class="required">*</span></label>
+        <label for="title">{!! __('messages.title__ad_up')!!} <span class="required">*</span></label>
         <input type="text" id="title" @if(auth()->user()) value="{{$announcement->title}}"
                @else value="{{old("title")}}" @endif
                class=" @error('title') is-invalid @enderror email-label" name="title"
-               required aria-required="true" placeholder="Menuisier dans liège">
+               required aria-required="true" placeholder="{!! __('messages.ads.placeholder__title')!!}">
         @error('title')
         <p class="danger help">
             {{$errors->first('title')}}
@@ -41,14 +41,25 @@
         @enderror
     </div>
     <div class="container-form-email container-email-form category-input container-title-ad">
-        <label for="location">Région <span class="required">*</span></label>
+        <label for="location">{!! __('messages.ads.location__label')!!} <span class="required">*</span></label>
         <select required aria-required="true" class="select-register select-regions"
                 data-maxoption="1" name="location" id="location">
-            <option value="0" disabled selected>-- Votre région --</option>
+            <option value="0" disabled selected>{!! __('messages.ads.fOption__label')!!}</option>
             @foreach($regions as $region)
-                <option
+                @if(Session::get('applocale') === 'en')
+                    <option
+                    @if(auth()->user() && $announcement->province_id == $region->id) selected
+                    @endif value="{{$region->id}}">{{$region->name_en}}</option>
+                @elseif(Session::get('applocale') === 'nl')
+                    <option
+                    @if(auth()->user() && $announcement->province_id == $region->id) selected
+                    @endif value="{{$region->id}}">{{$region->name_nl}}</option>
+                @else
+                    <option
                     @if(auth()->user() && $announcement->province_id == $region->id) selected
                     @endif value="{{$region->id}}">{{$region->name}}</option>
+                @endif
+
             @endforeach
         </select>
         @error('location')
@@ -61,8 +72,8 @@
 
 <div class="container-register-form container-announcement-create container-register">
     <div class="container-form-email">
-        <label for="job">Metier <span class="required">*</span></label>
-        <input placeholder="Menuisier" type="text"
+        <label for="job">{!! __('messages.ads.label__job')!!} <span class="required">*</span></label>
+        <input placeholder="{!! __('messages.max__notdetermined')!!}" type="text"
                id="job" @if(auth()->user()) value="{{$announcement->job}}"
                @else value="{{old("job")}}" @endif
                class=" @error('job') is-invalid @enderror email-label" name="job" required
@@ -75,7 +86,7 @@
     </div>
     <div class="container-form-email category-input container-title-ad">
 
-        <label for="categoryAds">Catégorie de métier <span class="required">*</span></label>
+        <label for="categoryAds">{!! __('messages.ads.label__category')!!} <span class="required">*</span></label>
         <div class="container-filter-categories container-category">
             <ul class="list-categories">
                 @foreach($categories as $c)
@@ -92,9 +103,13 @@
                                                       <polyline points="1 5 4 8 11 1"></polyline>
                                                     </svg>
                                                 </span>
-                            <span>
-                                                    {{$c->name}}
-                                                </span>
+                            @if(Session::get('applocale') === 'en')
+                                <span>{{$c->name_en}}</span>
+                            @elseif(Session::get('applocale') === 'nl')
+                                <span>{{$c->name_nl}}</span>
+                            @else
+                                <span>{{$c->name}}</span>
+                            @endif
                         </label>
                     </li>
                 @endforeach
@@ -106,15 +121,13 @@
         </p>
         @enderror
         @if($plan == 1)
-            <p class="help informations"><a href="{{route('announcements.create')}}#plans">Augmenter votre
-                    plan</a> et
-                vous aurez la possibilité d'en ajouter jusqu'à 3</p>
+            <p class="help informations"><a href="{{route('announcements.create')}}#plans">{!! __('messages.upgrade_plan')!!}</a> {!! __('messages.upgrade__possibilityto3')!!}</p>
         @endif
         @if($plan == 2)
-            <p class="help informations">Vous avez la possibilité d'en intégrer jusqu'à 2</p>
+            <p class="help informations">{!! __('messages.upgrade__to__2')!!}</p>
         @endif
         @if($plan == 3)
-            <p class="help informations">Vous avez la possibilité d'en intégrer jusqu'à 3</p>
+            <p class="help informations">{!! __('messages.upgrade__to__3')!!}</p>
         @endif
 
 
@@ -123,7 +136,7 @@
 
 <div class="container-register-form container-register @if(!auth()->user()) container-job-ads-create @endif">
     <div class="container-form-email">
-        <label for="pricemax">Combien voulez vous dépensez au maximum&nbsp;?</label>
+        <label for="pricemax">{!! __('messages.ads.max__authorized')!!}</label>
         <input max="999999" type="text" pattern="^[0-9-+\s()]*$" id="pricemax"
                name="pricemax"
                @if(auth()->user()) value="{{$announcement->pricemax}}"
@@ -136,11 +149,11 @@
         </p>
         @enderror
         <p class="help hepl-price informations">
-            Cela donne une idée à l'indépendant (optionnel)
+            {!! __('messages.ads.help__price')!!}
         </p>
     </div>
     <div class="container-form-email selectdiv">
-        <label for="startmonth">Disponible à partir du mois de <span
+        <label for="startmonth">{!! __('messages.ads.label__start__month')!!} <span
                 class="required">*</span></label>
         <div class="container-filter-categories container-category">
 
@@ -159,9 +172,13 @@
                                                       <polyline points="1 5 4 8 11 1"></polyline>
                                                     </svg>
                                                 </span>
-                            <span>
-                                                    {{$disponibility->name}}
-                                                </span>
+                            @if(Session::get('applocale') === 'en')
+                                <span>{{$disponibility->name_en}}</span>
+                            @elseif(Session::get('applocale') === 'nl')
+                                <span>{{$disponibility->name_nl}}</span>
+                            @else
+                                <span>{{$disponibility->name}}</span>
+                            @endif
                         </label>
                     </li>
                 @endforeach
@@ -172,7 +189,7 @@
             {{$errors->first('startmonth')}}
         </p>
         @enderror
-        <p class="help informations">Vous avez la possibilité d'en ajouter qu'un seul</p>
+        <p class="help informations">{!! __('messages.possibility__to__one__only')!!}</p>
 
     </div>
 
@@ -181,12 +198,12 @@
 <div>
     <div class="container-form-email">
         <div class="container-maxCharacters">
-            <label for="description">Description <span class="required">*</span></label>
-            <span class="maxCharacters">256 caractères max</span>
+            <label for="description">{!! __('messages.dasboard_workerz.description')!!} <span class="required">*</span></label>
+            <span class="maxCharacters">{!! __('messages.ads.max__caractere')!!}</span>
         </div>
         <textarea id="description" name="description" required
                   class=" @error('description') is-invalid @enderror email-label"
-                  placeholder="Description de votre annonce..."
+                  placeholder="{!! __('messages.ads.description_ad')!!}"
                   rows="5" cols="33">@if(auth()->user()){{$announcement->description}} @else{{old("description")}} @endif</textarea>
         @error('description')
         <p class="danger help">
@@ -199,13 +216,13 @@
     @if($announcement->is_draft === 1)
     <div class="link-back">
         <button class="button-back button-cta button-draft" name="publish">
-            Je la poste
+            {!! __('messages.ads.post')!!}
         </button>
     </div>
     @endif
     <div class="container-buttons-ads btn-save-dashboard">
         <button role="button" class="button-cta" type="submit">
-            Je sauvegarde les données
+            {!! __('messages.ads.save__data')!!}
         </button>
     </div>
 </div>

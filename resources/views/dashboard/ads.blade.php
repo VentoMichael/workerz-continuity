@@ -3,35 +3,35 @@
     @if (Session::has('success-update-not'))
         <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60"
                                                                   src="{{asset('svg/cross.svg')}}"
-                                                                  alt="pictogramme d'un v correct">
+                                                                  alt="{!! __('messages.bad__answer')}}">
             <p>{!!session('success-update-not')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-update'))
         <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}"
-                                                                  alt="pictogramme d'un v correct">
+                                                                  alt="{!! __('messages.good__answer')}}">
             <p>{!!session('success-update')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-inscription'))
         <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}"
-                                                                  alt="pictogramme d'un v correct">
+                                                                  alt="{!! __('messages.good__answer')}}">
             <p>{!!session('success-inscription')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success-delete'))
         <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}"
-                                                                  alt="pictogramme d'un v correct">
+                                                                  alt="{!! __('messages.good__answer')}}">
             <p>{!!session('success-delete')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('quotaExpired'))
         <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/cross.svg')}}"
-                                                                  alt="pictogramme d'un x incorrect">
+                                                                  alt="{!! __('messages.bad__answer')}}">
             <p>{!!session('quotaExpired')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -40,7 +40,7 @@
         @include('partials.navigationDashboard')
         <section class="container-dashboard container-ads">
             <h2 aria-level="2">
-                Annonces
+                {!! __('messages.dashboard_workerz.ads__title')}}
             </h2>
             <div>
                 <div class="container-profil-dashboard container-ads-dashboard">
@@ -48,23 +48,23 @@
                         @if(auth()->user()->announcements()->Draft()->count())
                             <section>
                                 <h3 aria-level="3" class="hidden">
-                                    Mes brouillons
+                                    {!! __('messages.dashboard_workerz.title__draft')}}
                                 </h3>
                                 <img width="150" height="150" src="{{asset('svg/draft.svg')}}"
-                                     alt="Icone d'annonces brouillon">
+                                     alt="{!! __('messages.dashboard_workerz.alt__icon__draft')}}">
                                 <a class="button-cta button-edition" href="ads/draft/{{$firstAdDraft->slug}}">
-                                    Mes brouillons
+                                    {!! __('messages.dashboard_workerz.title__draft')}}
                                 </a>
                             </section>
                         @endif
                         @if(auth()->user()->announcements()->NotDraft()->count())
                             <section>
                                 <h3 aria-level="3" class="hidden">
-                                    Mes annonces
+                                    {!! __('messages.dashboard_workerz.my__ads__title')}}
                                 </h3>
-                                <img width="150" height="150" src="{{asset('svg/ad.svg')}}" alt="Icone d'annonces">
+                                <img width="150" height="150" src="{{asset('svg/ad.svg')}}" alt="{!! __('messages.dashboard_workerz.icone__ads__alt')}}">
                                 <a class="button-cta button-edition" href="ads/{{$firstAd->slug}}">
-                                    Mes annonces
+                                    {!! __('messages.dashboard_workerz.my__ads__title')}}
                                 </a>
                             </section>
                         @endif
@@ -73,26 +73,23 @@
 
                         @if(auth()->user()->plan_user_id === 1 && auth()->user()->announcements->count() >= 2 || auth()->user()->plan_user_id === 2 && auth()->user()->announcements->count() >= 5)
                             <h3>
-                                Votre quota d'annonce a expiré&nbsp;!
+                                {!! __('messages.dashboard_workerz.quota__expired__title')}}
                             </h3>
-                            <p>Pensez à</p>
+                            <p>{!! __('messages.dashboard_workerz.think__word')}}</p>
                             <a class="button-cta button-edition" href="{{route('users.plans')}}">
-                                Passer au plan supérieur
+                                {!! __('messages.dashboard_workerz.pass__sup__plan')}}
                             </a>
                         @elseif(auth()->user()->plan_user_id === 3 && auth()->user()->announcements->count() > 16)
                             <p>
-                                Votre quota d'annonce a expiré&nbsp;! Pensez à en supprimer.
+                                {!! __('messages.dashboard_workerz.quota__expired__text')}}
                             </p>
                         @else
                             <h3>
-                                Que peux vous apporter une annonce&nbsp;?
+                                {!! __('messages.dashboard_workerz.ads__benefits__title')}}
                             </h3>
-                            <p>Une annonce vous permet de trouver de nombreux clients potentiels.
-                                Elle vous permet non seulement d'avoir un choix de clients varié mais permet également
-                                de
-                                vendre ou de rechercher facilement&nbsp;!</p>
+                            <p>{!! __('messages.dashboard_workerz.ads__benefits__title__text')}}</p>
                             <a class="button-cta button-edition" href="{{route('announcements.create')}}">
-                                J'en poste une
+                                {!! __('messages.dashboard_workerz.ads__benefits__link')}}
                             </a>
                         @endif
                     </section>

@@ -20,9 +20,16 @@ class NoPlansUser
         $planUser = Session::get('plan');
         if (auth()->user()) {
             if (auth()->user()->end_plan) {
-
-                Session::flash('errors',
+                if(Session::get('applocale') === 'en') {
+                    Session::flash('errors',
+                    'Oops, there was a problem, please try again in a few moments.');
+                }elseif(Session::get('applocale') === 'nl') {
+                    Session::flash('errors',
+                    'Oeps, er was een probleem, probeer het over een paar minuten nog eens.');
+                }else{
+                    Session::flash('errors',
                     'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
+                }
                 return redirect(route('users.plans') . '#plans');
 
             }

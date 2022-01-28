@@ -131,22 +131,34 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
+        'conditions.required' => 'You must agree with the conditions',
+        'pricemax.max' => 'A price that is too high will not attract any customers',
+        'number.required' => 'Phone number is required',
+        'number.max' => 'Phone number cannot be more than 12 characters long',
+        'number.min' => 'Phone number must be at least 10 characters long',
+        'newsletter.email' => 'The email address is incorrect',
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Attributes
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used to swap our attribute placeholder
-    | with something more reader friendly such as "E-Mail Address" instead
-    | of "email". This simply helps us make our message more expressive.
-    |
-    */
-
-    'attributes' => [],
+    'attributes' => [
+        'title' => 'title',
+        'picture' => 'image',
+        'pricemax' => 'hourly rate',
+        'location' => 'location',
+        'job' => 'trade',
+        'category-job' => 'trade category(ies)',
+        'name' => 'name',
+        'subject' => 'subject',
+        'surname' => 'first name',
+        'disponibility' => 'availability',
+        'adress' => 'address',
+        'password' => 'password',
+        'categoryUser' => 'job category',
+        'number' => 'phone',
+        'categoryAds' => 'trade category',
+        'startmonth' => 'start month',
+        'websitetwo' => '2nd website',
+        'websitethree' => '3rd website',
+        'locationtwo' => '2nd location',
+        'locationthree' => '3rd location',
+    ],
 
 ];

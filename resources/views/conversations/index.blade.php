@@ -1,13 +1,13 @@
 @extends('layouts.appDashboard')
 @section('content')
     @if (Session::has('success-delete'))
-        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}" alt="{!! __('messages.good__answer')}}">
             <p>{!!session('success-delete')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('success'))
-        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/cross.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/cross.svg')}}" alt="{!! __('messages.bad__answer')}}">
             <p>{!!session('success')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -16,7 +16,7 @@
         @include('partials.navigationDashboard')
         <section class="container-dashboard container-ads">
             <h2 aria-level="2">
-                Messages
+                {!! __('messages.conversation.title')}}
             </h2>
             <div class="container-form-ads container-form-msgs">
                 <livewire:messenger>
@@ -25,7 +25,7 @@
                     <div class="container-picture-title-dashboard-ads">
                         <div class="container-picture-dashboard">
                             <h4 aria-level="4">
-                                Sélectionner un utilisateur pour voir la discussion
+                                {!! __('messages.conversation.title__messenger')}}
                             </h4>
                         </div>
                     </div>

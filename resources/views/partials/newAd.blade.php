@@ -1,5 +1,5 @@
 <div>
     <a href="{{route('announcements.create')}}" role="button" class="button-cta">
-        J'ajoute une annonce
+        {!! __('messages.add__ads__btn')!!}
     </a>
 </div>

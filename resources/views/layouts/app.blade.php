@@ -4,29 +4,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="title" content="Workerz - l'indépendant à quelques clics">
+    <meta name="title" content="{{env('APP_NAME')}} - l'indépendant à quelques clics">
     <meta name="description"
-          content="Workerz.be est la plateforme qui vous aide à trouver des professionnels fiables et compétentes pour vos projets quel qu'il soit"/>
-    <meta name="keywords" content="Vins, fromages, marché, exposants, billets">
+          content="{{env('APP_NAME')}}.be est la plateforme qui vous aide à trouver des professionnels fiables et compétentes pour vos projets quel qu'il soit"/>
+    <meta name="keywords" content="indépendant, company, entreprise, startup">
     <meta name="language" content="French">
     <meta name="author" content="Vento Michael">
-    <meta name="copyright" content="Workerz">
+    <meta name="copyright" content="{{env('APP_NAME')}}">
     <meta name="robots" content="index, follow">
     <meta name="rating" content="general">
     <meta name="author" content="Vento Michael"/>
     <title>
-        {{ 'Workerz' }}{{ Request::is('/') ? " | Accueil" : "" }}
-        {{ Request::is('login') ? ' | Connexion' : "" }}
-        {{ Request::is('register') || Request::is('register/*')? ' | S\'enregistrer' : "" }}
-        {{ Request::is('forgot-password') || Request::is('reset-password/*') ?' | Mot de passe oublié' : "" }}
-        {{ Request::is('email/verify') || Request::is('email/verify/*') ?' | Vérification d\'email' : "" }}
-        {{ Request::is('contact') ? ' | Contact' : "" }}
-        {{ Request::is('about') ? ' | À propos de nous' : "" }}
-        {{ Request::is('policy') ? ' | Politique de confidentialité' : "" }}
-        {{ Request::is('conditions') ? ' | Conditions d’utilisations' : "" }}
-        {{ Request::is('announcements') || Request::is('announcements/*')  || Request::is('announcement/*')  ? ' | Annonces' : "" }}
-        {{ Request::is('workers') || Request::is('workers/*') ? ' | Travailleurs' : "" }}
-        {{ Request::is('dashboard') || Request::is('dashboard/*') ? ' | Tableau de bord' : "" }}
+        {{ env('APP_NAME') }}
+        {{ Request::is('/') ? ' | ' . ucfirst(__('messages.home__title__h1')) : "" }}
+        {{ Request::is('login') ? ' | ' . ucfirst(__('messages.login__title__h1')) : "" }}
+        {{ Request::is('register') || Request::is('register/*') ? ' | ' . ucfirst(__('messages.register__title__h1')) : "" }}
+        {{ Request::is('forgot-password') || Request::is('reset-password/*') ? ' | ' . ucfirst(__('messages.password__title__h1')) : "" }}
+        {{ Request::is('email/verify') || Request::is('email/verify/*') ? ' | ' . ucfirst(__('messages.email__title__h1')) : "" }}
+        {{ Request::is('contact') ? ' | ' . ucfirst(__('messages.contact__title__h1')) : "" }}
+        {{ Request::is('about') ? ' | ' . ucfirst(__('messages.about__title__h1')) : "" }}
+        {{ Request::is('policy') ? ' | ' . ucfirst(__('messages.policy__title__h1')) : "" }}
+        {{ Request::is('conditions') ? ' | ' . ucfirst(__('messages.conditions__title__h1')) : "" }}
+        {{ Request::is('announcements') || Request::is('announcements/*')  || Request::is('announcement/*')  ? ' | ' . ucfirst(__('messages.announcements__title__h1')) : "" }}
+        {{ Request::is('workers') || Request::is('workers/*') ? ' | ' . ucfirst(__('messages.workers__title__h1')) : "" }}
+        {{ Request::is('dashboard') || Request::is('dashboard/*') ? ' | ' . ucfirst(__('messages.dashboard__title__h1')) : "" }}
     </title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -34,29 +35,27 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    
 </head>
 <body>
-<div class="containerBtnAddAnnouncment">
-    <a href="{{route('announcements.create')}}" class="btnAddAnnouncement" title="Ajouter une annonce"
-       aria-label="Ajouter une annonce"></a>
-</div>
 <header>
     <h1 aria-level="1" class="hidden">
-        Bienvenu sur la page {{ Request::is('/') ? "accueil" : "" }}
-        {{ Request::is('login') ? 'connexion' : "" }}
-        {{ Request::is('register') || Request::is('register/*') ? 's\'enregistrer' : "" }}
-        {{ Request::is('forgot-password') || Request::is('reset-password/*') ? 'mot de passe oublié' : "" }}
-        {{ Request::is('email/verify') || Request::is('email/verify/*') ? 'vérification d\'email' : "" }}
-        {{ Request::is('contact') ? 'contact' : "" }}
-        {{ Request::is('about') ? 'à propos de nous' : "" }}
-        {{ Request::is('policy') ? 'politique de confidentialité' : "" }}
-        {{ Request::is('conditions') ? 'conditions d’utilisations' : "" }}
-        {{ Request::is('announcements') || Request::is('announcements/*')  || Request::is('announcement/*')  ? 'annonces' : "" }}
-        {{ Request::is('workers') || Request::is('workers/*') ? 'travailleurs' : "" }} de Workerz
+        {!! __('messages.title__website')!!}
+        {{ Request::is('/') ? __('messages.home__title__h1') : "" }}
+        {{ Request::is('login') ? __('messages.login__title__h1') : "" }}
+        {{ Request::is('register') || Request::is('register/*') ? __('messages.register__title__h1') : "" }}
+        {{ Request::is('forgot-password') || Request::is('reset-password/*') ? __('messages.password__title__h1') : "" }}
+        {{ Request::is('email/verify') || Request::is('email/verify/*') ? __('messages.email__title__h1') : "" }}
+        {{ Request::is('contact') ? __('messages.contact__title__h1') : "" }}
+        {{ Request::is('about') ? __('messages.about__title__h1') : "" }}
+        {{ Request::is('policy') ? __('messages.policy__title__h1') : "" }}
+        {{ Request::is('conditions') ? __('messages.conditions__title__h1') : "" }}
+        {{ Request::is('announcements') || Request::is('announcements/*')  || Request::is('announcement/*')  ? __('messages.announcements__title__h1') : "" }}
+        {{ Request::is('workers') || Request::is('workers/*') ? __('messages.workers__title__h1') : "" }} - {{env('APP_NAME')}}
     </h1>
     <div class="container-menu">
         <nav class="navbar navbarId" id="navbar">
-            <h2 aria-level="2" class="hidden">Navigation Principale
+            <h2 aria-level="2" class="hidden">{!! __('messages.nav_first')!!}
             </h2>
             <div class="logo-mobile">
                 <a href="{{ url('/') }}">
@@ -122,7 +121,8 @@
                 </a>
             </div>
             <input type="checkbox" id="nav" class="notVisible nav"/>
-            <label for="nav" class="nav-open nav-label-open">Ouvrir le menu<i></i><i></i><i></i></label>
+            <label for="nav" class="nav-open nav-label-open">{!! __('messages.label__open__menu')!!}
+                <i></i><i></i><i></i></label>
             <div class="nav-container">
                 <ul class="nav-container-ul">
                     <li>
@@ -193,32 +193,75 @@
                         </ul>
                     </li>
                     <li>
-                        <ul class="container-list-menu container-list-menu-principal">
-                            <li><a
-                                    class="{{ Request::is('/') ? "current_page_item" : "" }}"
-                                    {{ Request::is('/') ? "aria-current='page'" : "" }}
-                                    href="{{ url('/') }}">Accueil</a>
-                            </li>
-                            <li>
-                                <a class="{{ Request::is('workers') || Request::is('workers/*') ? "current_page_item" : "" }}"
-                                   {{ Request::is('workers') || Request::is('workers/*') ? "aria-current='page'" : "" }} href="{{route('workers')}}">Travailleurs</a>
-                            </li>
-                            <li>
-                                <a class="{{ Request::is('announcements') || Request::is('announcements/*') ? "current_page_item" : "" }}"
-                                   {{ Request::is('announcements') || Request::is('announcements/*') ? "aria-current='page'" : "" }} href="{{route('announcements')}}">Annonces</a>
-                            </li>
-                        </ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        </div>
+                    </li>
+                    <ul class="container-list-menu container-list-menu-principal">
+                        <li><a
+                                class="{{ Request::is('/') ? "current_page_item" : "" }}"
+                                {{ Request::is('/') ? "aria-current='page'" : "" }}
+                                href="{{ url('/') }}">{!! __('messages.home__nav__menu')!!}</a>
+                        </li>
+
+                        <li>
+                            <a class="{{ Request::is('workers') || Request::is('workers/*') ? "current_page_item" : "" }}"
+                               {{ Request::is('workers') || Request::is('workers/*') ? "aria-current='page'" : "" }} href="{{route('workers')}}">{!! __('messages.workers__nav__menu')!!}</a>
+                        </li>
+                        <li>
+                            <a class="{{ Request::is('announcements') || Request::is('announcements/*') ? "current_page_item" : "" }}"
+                               {{ Request::is('announcements') || Request::is('announcements/*') ? "aria-current='page'" : "" }} href="{{route('announcements')}}">{!! __('messages.ads__nav__menu')!!}</a>
+                        </li>
+                        <li class="current-item-lang">
+                            <div class="nav-wrapper">
+                                <div class="sl-nav">
+                                    <ul>
+                                        <li><b class="active">
+                                            <span
+                                                class="flag-icon flag-icon-{{Config::get('languages')[App::getLocale()]['flag-icon']}}">
+
+                                            </span>
+                                                {{ Config::get('languages')[App::getLocale()]['display'] }}</b> <i
+                                                class="fa fa-angle-down" aria-hidden="true"></i>
+                                            <div class="triangle"></div>
+                                            <ul class="list-lang">
+                                                @foreach (Config::get('languages') as $lang => $language)
+                                                    @if ($lang != App::getLocale())
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                               href="{{ route('lang.switch', $lang) }}">
+                                                                    <span
+                                                                        class="flag-icon flag-icon-{{$language['flag-icon']}}">
+                                                                    </span>
+                                                                {{$language['display']}}
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
                     </li>
                     @if(!Auth::check())
                         <li>
                             <ul class="container-list-menu">
                                 <li class="connected-item-container {{ Request::is('login') ? "current_page_item" : "" }}" {{ Request::is('login') ? "aria-current='page'" : "" }}>
                                     <a class="connected-item"
-                                       href="{{ route('login') }}">Se connecter</a>
+                                       href="{{ route('login') }}">{!! __('messages.btn__connexion')!!}</a>
                                 </li>
                                 <li class="last-menu-item inscription-item" {{ Request::is('register') ? "aria-current='page'" : "" }}>
                                     <a
-                                        href="{{ route('users.plans') }}">S'inscrire</a>
+                                        href="{{ route('users.plans') }}">{!! __('messages.btn__inscription')!!}</a>
                                 </li>
                             </ul>
                         </li>
@@ -226,10 +269,10 @@
                         <li>
                             <ul class="container-list-menu">
                                 <li>
-                                    <form aria-label="Déconnexion" role="form" id="logout-form"
+                                    <form aria-label="{!! __('messages.btn__logout')!!}" role="form" id="logout-form"
                                           action="{{route('logout')}}" method="POST"> @csrf
                                         <button type="submit" role="button" class="deconnexionBtn">
-                                            Se déconnecter
+                                            {!! __('messages.btn__logout')!!}
                                         </button>
                                     </form>
                                 </li>
@@ -240,13 +283,13 @@
                                         @if(auth()->user()->picture != null)
                                             <img class="picto-user picto-last" width="25" height="32"
                                                  src="{{asset(auth()->user()->picture)}}"
-                                                 alt="image de profil de {{auth()->user()->name}}">
+                                                 alt="{!! __('messages.alt__profil__img')!!}{{auth()->user()->name}}">
                                         @else
                                             <img class="picto-user" width="25" height="32"
                                                  src="{{asset('svg/user-w.svg')}}"
-                                                 alt="image de profil par défaut">
+                                                 alt="{!! __('messages.alt__profil__img__default')!!}">
                                         @endif
-                                        Dashboard</a>
+                                        {!! __('messages.dashboard')!!}</a>
                                     @if(auth()->user())
                                         @if(count($notificationsReaded) > 9 && count($notificationsReaded) > 0)
 
@@ -267,11 +310,14 @@
                                 <li class="nav-dashboard notVisible">
                                     <ul>
                                         <li {{ Request::is('dashboard/profil') | Request::is('dashboard/profil/*') ? "aria-current='page'" : "" }}>
-                                            <a href="{{route('dashboard.profil')}}">Mon profil</a></li>
+                                            <a href="{{route('dashboard.profil')}}">{!! __('messages.profil__item__nav')!!}</a>
+                                        </li>
                                         <li {{ Request::is('dashboard/ads') | Request::is('dashboard/ads/*') ? "aria-current='page'" : "" }}>
-                                            <a href="{{route('dashboard.ads')}}">Mes annonces</a></li>
+                                            <a href="{{route('dashboard.ads')}}">{!! __('messages.myads__item__nav')!!}</a>
+                                        </li>
                                         <li {{ Request::is('dashboard/message') | Request::is('dashboard/message/*') ? "aria-current='page'" : "" }}>
-                                            <a href="{{route('dashboard.messages')}}">Mes messages</a></li>
+                                            <a href="{{route('dashboard.messages')}}">{!! __('messages.mymsg__item__nav')!!}</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -283,62 +329,63 @@
     </div>
 </header>
 <main class="content">
-    <img class="img-cover hideForNewsletter" src="{{asset('svg/background.svg')}}" alt="photo de couverture">
+    <img class="img-cover hideForNewsletter" src="{{asset('svg/background.svg')}}"
+         alt="{!! __('messages.background__img')!!}">
     @yield('content')
 </main>
 <footer class="footer">
     <h2 aria-level="2" class="hidden">
-        Informations du pied de page
+        {!! __('messages.footer.title')!!}
     </h2>
     <div class="container-footer">
         <section class="container-secondary-nav">
             <h3 aria-level="3" class="util-links">
-                Liens utiles
+                {!! __('messages.footer.title__links')!!}
             </h3>
             <nav>
-                <h4 aria-level="4" class="hidden">Navigation secondaire</h4>
+                <h4 aria-level="4" class="hidden">{!! __('messages.footer.secondary__nav')!!}</h4>
                 <ul>
                     <li>
                         <a {{ Request::is('contact') || Request::is('contact/*') ? "aria-current='page'" : "" }} href="{{route('contact')}}">
-                            Contact
+                            {!! __('messages.footer.nav__item__contact')!!}
                         </a>
                     </li>
                     <li>
                         <a {{ Request::is('about') || Request::is('about/*') ? "aria-current='page'" : "" }} href="{{route('about')}}">
-                            À propos
+                            {!! __('messages.footer.nav__item__about')!!}
                         </a></li>
                     <li>
                         <a {{ Request::is('policy')? "aria-current='page'" : "" }} href="{{route('policy')}}">
-                            Politique de confidentialité
+                            {!! __('messages.footer.nav__item__politique')!!}
                         </a></li>
                     <li>
                         <a {{ Request::is('conditions') ? "aria-current='page'" : "" }} href="{{route('conditions')}}">
-                            Conditions d’utilisations
+                            {!! __('messages.footer.nav__item__conditions')!!}
                         </a></li>
                 </ul>
             </nav>
         </section>
         <section class="newsletter" id="newsletterSection">
             <h3 aria-level="3" class="util-links">
-                Abonnez vous à notre newsletter
+                {!! __('messages.footer.title__newsletter')!!}
             </h3>
             <form action="{{route('newsletter.store')}}#newsletterSection" method="POST"
-                  class="form-newsletter-container" title="Inscription à notre newsletter"
-                  aria-label="Inscription à notre newsletter">
+                  class="form-newsletter-container" title="{!! __('messages.footer.label__inscription__newsletter')!!}"
+                  aria-label="{!! __('messages.footer.label__inscription__newsletter')!!}">
                 @csrf
                 <div class="form-newsletter">
-                    <label for="newsletter" class="notVisible">Votre mail</label>
+                    <label for="newsletter" class="notVisible">{!! __('messages.footer.label__newsletter')!!}</label>
                     <input type="email" name="newsletter" id="newsletter" class="input-newsletter"
                            placeholder="Albert01@gmail.com" aria-required="true">
                 </div>
                 <div>
-                    <input type="submit" class="submit-newsletter" value="Envoyé">
+                    <input type="submit" class="submit-newsletter" value="{!! __('messages.footer.btn__newsletter')!!}">
                 </div>
             </form>
             @error('newsletter')
             <p class="danger">
             <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/cross.svg')}}"
-                                                                      alt="pictogramme d'une croix rouge">
+                                                                      alt="{!! __('messages.bad__answer')!!}">
                 <p>{{$errors->first('newsletter')}}</p>
                 <span class="crossHide" id="crossHide">&times;</span>
             </div>
@@ -347,24 +394,25 @@
         </section>
     </div>
     <div class="copyright fadeInLeft animated">
-        <small>{{date('Y')}} Workerz. Tous droits réservés.</small>
+        <small>2020 - {{date('Y')}} {{env('APP_NAME')}}. {!! __('messages.footer.right_reserved')!!}.</small>
     </div>
     @if (Session::has('successNew'))
         <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/good.svg')}}"
-                                                                  alt="pictogramme d'un v correct">
+                                                                  alt="{!! __('messages.good__answer')!!}">
             <p>{!!session('successNew')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
     @if (Session::has('failureNew'))
         <div id="successMsg" role="alert" class="successMsg"><img src="{{asset('svg/cross.svg')}}"
-                                                                  alt="pictogramme d'une croix rouge">
+                                                                  alt="{!! __('messages.bad__answer')!!}">
             <p>{!!session('failureNew')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
     @endif
 </footer>
 <script src="{{asset('js/successMsg.js')}}" defer></script>
+<script src="https://cdn.lordicon.com/libs/mssddfmo/lord-icon-2.1.0.js"></script>
 @yield('scripts')
 </body>
 </html>

@@ -39,9 +39,24 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::loginView(function () {
             if (\request()->has('registerRequired')) {
-                Session::flash('register', 'La connexion est requise&nbsp!');
+                if (Session::get('applocale') === 'en') {
+                    $msgSucess = 'The connection is required!';
+                } elseif (Session::get('applocale') === 'nl') {
+                    $msgSucess = 'Inloggen is vereist!';
+                } else {
+                    $msgSucess = 'La connexion est requise&nbsp!';
+                }
+            } else {
+                if (Session::get('applocale') === 'en') {
+                    $msgSucess = 'Successful connection&nbsp!';
+                } elseif (Session::get('applocale') === 'nl') {
+                    $msgSucess = 'Succesvolle verbinding&nbsp!';
+                } else {
+                    $msgSucess = 'Connexion réussie&nbsp!';
+                }
             }
-            return view('auth.login')->with('success-inscription', 'Connexion réussie&nbsp!');
+            Session::flash('success-inscription', $msgSucess);
+            return view('auth.login');
         });
         Fortify::registerView(function (Request $request) {
             $disponibilities = StartDate::all()->sortBy('id');
@@ -53,11 +68,22 @@ class FortifyServiceProvider extends ServiceProvider
             Session::put('type', $type);
             $type = Session::get('type');
             if ($request->old('type') == null && $request->type == null) {
-                return redirect(route('users.plans'))->with('errors',
-                    'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
+                if (Session::get('applocale') === 'en') {
+                    $msgSucess = 'Oops, there was a glitch, please try again in a few moments.';
+                } elseif (Session::get('applocale') === 'nl') {
+                    $msgSucess = 'Oeps, er was een probleem, probeer het over een paar minuten nog eens.';
+                } else {
+                    $msgSucess = 'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.';
+                }
+                return redirect(route('users.plans'))->with(
+                    'errors',
+                    $msgSucess
+                );
             }
-            return view('auth.register',
-                compact('plan','planName', 'type', 'disponibilities', 'regions', 'categories', 'request'));
+            return view(
+                'auth.register',
+                compact('plan', 'planName', 'type', 'disponibilities', 'regions', 'categories', 'request')
+            );
         });
         Fortify::requestPasswordResetLinkView(function () {
             return view('auth.forgot-password');
@@ -76,6 +102,5 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for("login", function () {
             Limit::perMinute(5);
         });
-
     }
 }

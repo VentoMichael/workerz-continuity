@@ -15,6 +15,8 @@ class CreateCatchPhraseUsersTable extends Migration
     {
         Schema::create('catch_phrase_users', function (Blueprint $table) {
             $table->id();
+            $table->string('name_en');
+            $table->string('name_nl');
             $table->string('name');
             $table->timestamps();
         });

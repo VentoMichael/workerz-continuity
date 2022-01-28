@@ -18,7 +18,13 @@ class UserPlanExpired
     public function handle(Request $request, Closure $next)
     {
         if (auth()->user()->end_plan === null) {
-            Session::flash('success-update-not','Un plan est requis, veuillez en sélectionnez un');
+            if(Session::get('applocale') === 'en') {
+                Session::flash('success-update-not','A plan is required, please select one');
+            }elseif(Session::get('applocale') === 'nl') {
+                Session::flash('success-update-not','Een plan is vereist, kies er een');
+            }else{
+                Session::flash('success-update-not','Un plan est requis, veuillez en sélectionnez un');
+            }
             return redirect(route('dashboard.profil'));
         }
         return $next($request);

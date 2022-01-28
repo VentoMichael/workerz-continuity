@@ -18,8 +18,16 @@ class NoPlansAds
     public function handle(Request $request, Closure $next)
     {
         if (request('plan') != 1 && request('plan') != 2 && request('plan') != 3 ) {
-            Session::flash('errors',
-                'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
+            if (Session::get('applocale') === 'en') {
+                Session::flash('errors',
+                    'Oops, there was a problem, please try again in a few moments.');
+            } elseif (app()->getLocale() === 'nl') {
+                Session::flash('errors',
+                    'Oeps, er was een probleem, probeer het over een paar minuten nog eens.');
+            } else {
+                Session::flash('errors',
+                    'Oops, il y a eu un souci, veuillez réessayer dans quelques instants.');
+            }
             return redirect(route('announcements.plans').'#plans');
         }
         return $next($request);

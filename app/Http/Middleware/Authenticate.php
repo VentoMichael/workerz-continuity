@@ -16,8 +16,17 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            Session::flash('forbidden',
-                'L\'inscription est requise !');
+            if (Session::get('applocale') === 'en') {
+                Session::flash('forbidden',
+                'Registration is required!');
+            } elseif (Session::get('applocale') === 'nl') {
+                Session::flash('forbidden',
+                'Registratie is verplicht!');
+            } else {
+                Session::flash('forbidden',
+                'L\'inscription est requise!');
+            }
+
             return route('login');
         }
     }

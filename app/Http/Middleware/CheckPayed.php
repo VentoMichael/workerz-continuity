@@ -19,8 +19,16 @@ class CheckPayed
     {
         if (!auth()) {
             if ($request->user()->is_payed == 1) {
-                Session::flash('errors',
-                    'Oops, vous ne pouvez pas y accédez.');
+                if (Session::get('applocale') === 'en') {
+                    Session::flash('errors',
+                        'Oops, you can\'t access it.');
+                } elseif (Session::get('applocale') === 'nl') {
+                    Session::flash('errors',
+                        'Oeps, je kunt er niet bij.');
+                } else {
+                    Session::flash('errors',
+                        'Oops, vous ne pouvez pas y accédez.');
+                }
                 return redirect(route('dashboard'));
             }
         }

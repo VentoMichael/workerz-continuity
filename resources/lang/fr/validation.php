@@ -38,7 +38,7 @@ return [
     'digits' => 'L\' :attribute doit être :digits digits.',
     'digits_between' => 'L\' :attribute doit être compris entre les chiffres :min et :max.',
     'dimensions' => 'L\' :attribute a des dimensions d\'image non valables.',
-    'distinct' => 'Le champ :attribute a une valeur fr double.',
+    'distinct' => 'Le champ :attribute a une valeur en double.',
     'email' => 'L\' :attribute doit être une adresse email valide.',
     'ends_with' => 'L\' :attribute doit se terminer par l\'un des éléments suivants : valeurs :.',
     'exists' => 'L\' :attribute sélectionné n\'est pas valide.',

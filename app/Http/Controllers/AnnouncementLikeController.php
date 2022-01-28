@@ -10,10 +10,24 @@ class AnnouncementLikeController extends Controller
 {
     public function store(Announcement $announcement){
         $announcement->like(auth()->id());
-        return Redirect::to(URL::previous() . "#search")->with('loveOk', ucfirst($announcement->title) . ' a été aimé, merci&nbsp;!');
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = ' was loved, thank you!';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = ' was geliefd, dank je!';
+        } else {
+            $msgSuccess = ' a été aimé, merci&nbsp;!';
+        }
+        return Redirect::to(URL::previous() . "#search")->with('loveOk', ucfirst($announcement->title) . $msgSuccess);
     }
     public function delete(Announcement $announcement){
         $announcement->dislike(auth()->id());
-        return Redirect::to(URL::previous() . "#search")->with('loveNotOk', 'Le j\'aime a bien été retiré, merci&nbsp;!');
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = 'The like has been removed, thank you!';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = 'De like is verwijderd, dank je!';
+        } else {
+            $msgSuccess = 'Le j\'aime a bien été retiré, merci&nbsp;!';
+        }
+        return Redirect::to(URL::previous() . "#search")->with('loveNotOk', $msgSuccess);
     }
 }

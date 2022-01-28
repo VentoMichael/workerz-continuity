@@ -658,3 +658,13 @@ li .container-menu-pincipal a:focus-visible {
 .button-expire:focus,.button-expire:focus:not(:focus-visible){
     background: red;
 }
+.container-info-sub{
+    display: flex;
+    justify-content: space-between;
+}
+.sub-btn-delete a,.sub-btn-delete a:focus-visible,.sub-btn-delete a:focus:not(:focus-visible){
+    background: red;
+}
+.sub-btn-reactivate a,.sub-btn-reactivate a:focus-visible,.sub-btn-reactivate a:focus:not(:focus-visible){
+    background: green;
+}

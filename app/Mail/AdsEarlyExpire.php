@@ -27,7 +27,15 @@ class AdsEarlyExpire extends Mailable
      * @return $this
      */
     public function build()
-    {return $this->markdown('emails.add-early-expire')->with('data',
-            $this->data)->subject('N\'oubliez pas votre annonce va bientôt expirer, venez la mettre à jour !');
+    {
+        if (Session::get('applocale') === 'en') {
+            $msgSuccess = 'Don\'t forget your ad will expire soon, come and update it !';
+        } elseif (Session::get('applocale') === 'nl') {
+            $msgSuccess = 'Uw nieuwe advertentie staat online';
+        } else {
+            $msgSuccess = 'N\'oubliez pas votre annonce va bientôt expirer, venez la mettre à jour !';
+        }
+        return $this->markdown('emails.add-early-expire')->with('data',
+            $this->data)->subject($msgSuccess);
     }
 }

@@ -5,10 +5,10 @@
             <div class="container-about-text">
                 <div class="container-home-text">
                     <h2 aria-level="2">
-                        Une demande&nbsp;?
+                        {!! __('messages.contact.title')!!}
                     </h2>
                     <p>
-                        Pour la moindre question ou une simple demande, n'hésitez pas à nous contacter
+                        {!! __('messages.contact.text')!!}
                     </p>
                 </div>
                 @guest
@@ -17,12 +17,12 @@
             </div>
             <div class="container-svg">
                 <img width="150" height="150" src="{{asset('svg/us.svg')}}"
-                     alt="Personne choissisant la catégorie de métier">
+                     alt="{!! __('messages.contact.alt__text__img')!!}">
             </div>
         </div>
     </section>
     @if (Session::has('success-send'))
-        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="pictogramme d'un v correct">
+        <div id="successMsg" role="alert" class="successMsg"><img width="40" height="60" src="{{asset('svg/good.svg')}}" alt="{!! __('messages.bad__answer')!!}">
             <p>{!!session('success-send')!!}</p>
             <span class="crossHide" id="crossHide">&times;</span>
         </div>
@@ -30,18 +30,18 @@
     <section class="container-categories-home margin container-message" id="form">
         <div class="container-categories-text-home">
             <h2 aria-level="2">
-                Formulaire de contact
+                {!! __('messages.contact.title__form')!!}
             </h2>
-            <p>Il n'y a pas de mauvaises questions, la réponse sera presque imminente&nbsp;!</p>
+            <p>{!! __('messages.contact.text__form')!!}</p>
         </div>
         <div id="createMsg">
             <form class="show-content form-login form-register form-message"
-                  aria-label="Envoi d'un message" role="form" method="POST"
+                  aria-label="{!! __('messages.contact.label__form')!!}" role="form" method="POST"
                   action="{{ route('contact.store') }}">
                 @csrf
                 <div class="container-register-form">
                     <div class="container-form-email">
-                        <label for="name">Nom <span class="required">*</span></label>
+                        <label for="name">{!! __('messages.contact.label__name')!!} <span class="required">*</span></label>
                         <input type="text" id="name"
                                @if(\Illuminate\Support\Facades\Auth::check())
                                value="{{\Illuminate\Support\Facades\Auth::user()->name}}"
@@ -60,7 +60,7 @@
                         @enderror
                     </div>
                     <div class="container-form-email">
-                        <label for="surname">Prénom</label>
+                        <label for="surname">{!! __('messages.contact.label__surname')!!}</label>
                         <input type="text" id="surname"
                                @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->surname !== null) value="{{\Illuminate\Support\Facades\Auth::user()->surname}}"
                                @else value="{{ old('surname') }}" @endif placeholder="Daniel"
@@ -70,7 +70,7 @@
 
                 <div class="container-register-form">
                     <div class="container-form-email">
-                        <label for="email">Email <span class="required">*</span></label>
+                        <label for="email">{!! __('messages.contact.label__email')!!} <span class="required">*</span></label>
                         <input id="email" type="email"
                                class=" @error('email') is-invalid @enderror email-label"
                                name="email"
@@ -85,7 +85,7 @@
                         @enderror
                     </div>
                     <div class="container-form-email">
-                        <label for="subject">Sujet <span class="required">*</span></label>
+                        <label for="subject">{!! __('messages.contact.label__subject')!!}<span class="required"> *</span></label>
                         <input type="text" placeholder="Engager un menuisier" id="subject" value="{{old("subject")}}"
                                class=" @error('subject') is-invalid @enderror email-label" name="subject" required
                                aria-required="true">
@@ -100,10 +100,10 @@
                 </div>
                 <div class="container-register-form container-textarea">
                     <div class="container-form-email">
-                        <label for="message">Message <span class="required">*</span></label>
+                        <label for="message">{!! __('messages.contact.label__msg')!!} <span class="required">*</span></label>
                         <textarea id="message" name="message" required aria-required="true"
                                   class=" @error('message') is-invalid @enderror email-label"
-                                  placeholder="Message eventuel..."
+                                  placeholder="{!! __('messages.contact.placeholder')!!}"
                                   rows="5" cols="33">{{old("message")}}</textarea>
                         @error('message')
                         <div class="container-error">
@@ -116,13 +116,10 @@
                 </div>
                 <div class="container-button">
                     <button role="button" class="button-cta" type="submit">
-                        Envoyer un message
+                        {!! __('messages.contact.label__btn__send')!!}
                     </button>
                 </div>
             </form>
         </div>
     </section>
-@endsection
-@section('scripts')
-    @livewireScripts
 @endsection

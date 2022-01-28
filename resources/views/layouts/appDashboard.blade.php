@@ -15,12 +15,12 @@
     <meta name="rating" content="general">
     <meta name="author" content="Vento Michael"/>
     <title>
-        {{ 'Workerz' }}
-        {{ Request::is('dashboard') ? ' | Tableau de bord' : "" }}
-        {{ Request::is('dashboard/profil') || Request::is('dashboard/profil/*') ? ' | Profil' : "" }}
-        {{ Request::is('dashboard/ads') || Request::is('dashboard/ads/*') ? ' | Annonces' : "" }}
-        {{ Request::is('dashboard/messages') || Request::is('dashboard/messages/*') ? ' | Messages' : "" }}
-        {{ Request::is('dashboard/notifications') || Request::is('dashboard/notifications/*') ? ' | Notifications' : "" }}
+        {{ env('APP_NAME') }}
+        {{ Request::is('dashboard') ? ' | ' . ucfirst(__('messages.dashboard__title__h1')) : "" }}
+        {{ Request::is('dashboard/profil') || Request::is('dashboard/profil/*') ? ' | ' . ucfirst(__('messages.dashboard__profil__title__h1')) : "" }}
+        {{ Request::is('dashboard/ads') || Request::is('dashboard/ads/*') ? ' | ' . ucfirst(__('messages.dashboard__ads__title__h1')) : "" }}
+        {{ Request::is('dashboard/messages') || Request::is('dashboard/messages/*') ? ' | ' . ucfirst(__('messages.dashboard__messages__title__h1')) : "" }}
+        {{ Request::is('dashboard/notifications') || Request::is('dashboard/notifications/*') ? ' | ' . ucfirst(__('messages.dashboard__notifications__title__h1')) : "" }}
     </title>
     <link href="{{ asset('css/appDashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleDashboard.css') }}" rel="stylesheet">
@@ -31,14 +31,16 @@
 </head>
 <body>
 <header>
-    <h1 aria-level="1" class="hidden">Bienvenu sur la page {{ Request::is('dashboard') ? 'tableau de bord' : "" }}
-        {{ Request::is('dashboard/profil') || Request::is('dashboard/profil/*') ? 'profil' : "" }}
-        {{ Request::is('dashboard/ads') || Request::is('dashboard/ads/*') ? 'annonces' : "" }}
-        {{ Request::is('dashboard/messages') || Request::is('dashboard/messages/*') ? 'messages' : "" }}
-        {{ Request::is('dashboard/notifications') || Request::is('dashboard/notifications/*') ? 'notifications' : "" }} de Workerz</h1>
+    <h1 aria-level="1" class="hidden">
+    {!! __('messages.title__website')!!}
+    {{ Request::is('dashboard') ? __('messages.dashboard__title__h1') : "" }}
+    {{ Request::is('dashboard/profil') || Request::is('dashboard/profil/*') ? __('messages.dashboard__profil__title__h1') : "" }}
+    {{ Request::is('dashboard/ads') || Request::is('dashboard/ads/*') ? __('messages.dashboard__ads__title__h1') : "" }}
+    {{ Request::is('dashboard/messages') || Request::is('dashboard/messages/*') ? __('messages.dashboard__messages__title__h1') : "" }}
+    {{ Request::is('dashboard/notifications') || Request::is('dashboard/notifications/*') ? __('messages.dashboard__notifications__title__h1') : "" }} {!! __('messages.of__word')!!} Workerz</h1>
     <div>
         <nav class="navbar navbarId" id="navbar" role="navigation">
-            <h2 aria-level="2" class="hidden">Navigation Principale
+            <h2 aria-level="2" class="hidden">{!! __('messages.nav_first')!!}
             </h2>
             <div>
                 <ul class="nav-container-top">
@@ -108,7 +110,7 @@
                     </li>
                     <li class="container-list-menu-dashboard">
                         <a href="{{route('home.index')}}">
-                            Retour à l'accueil
+                            {!! __('messages.back__home')!!}
                         </a>
                     </li>
                 </ul>
@@ -121,10 +123,10 @@
 </main>
 <footer class="footer-container">
     <h2 aria-level="2" class="hidden">
-        Informations du pied de page
+        {!! __('messages.footer.title')!!}
     </h2>
     <div class="copyright">
-        <small>Workerz - &#169; {{date('Y')}} - Réalisé par <a href="https://ventomichael.com">Vento
+        <small>Workerz - &#169; {{date('Y')}} - {!! __('messages.realised')!!}<a href="https://ventomichael.com">Vento
                 Michael</a></small>
     </div>
 </footer>

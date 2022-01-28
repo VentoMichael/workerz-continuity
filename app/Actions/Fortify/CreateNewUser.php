@@ -181,7 +181,13 @@ class CreateNewUser implements CreatesNewUsers
             ->send(new NewUserAdmin($user));
         Mail::to($user->email)
             ->send(new NewUser($user));
-        Session::flash('success-inscription', 'Votre inscription à été un succés !');
+        if(Session::get('applocale') === 'en') {
+            Session::flash('success-inscription', 'Your registration was a success!');
+        }elseif(Session::get('applocale') === 'nl') {
+            Session::flash('success-inscription', 'Je inschrijving was een succes!');
+        }else{
+            Session::flash('success-inscription', 'Votre inscription à été un succés !');
+        }
         return $user;
     }
 }

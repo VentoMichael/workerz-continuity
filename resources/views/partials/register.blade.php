@@ -2,7 +2,7 @@
     <div class="container-register-form container-inscriptin-logins container-register container-description-register">
         @endif
         <div class="container-form-email">
-            <label for="email">@if(auth()->user()) Nouveau email @else Email @endif <span
+            <label for="email">@if(auth()->user()) {!! __('messages.new__email__word')!!} @else {!! __('messages.auth.email__word')!!} @endif <span
                     class="required"> *</span></label>
             <input id="email" type="email"
                    class=" @error('email') is-invalid @enderror email-label"
@@ -18,17 +18,17 @@
             @enderror
         </div>
         <div class="container-password">
-            <label for="password"> @if(auth()->user()) Nouveau mot de passe @else Mot de passe <span
+            <label for="password"> @if(auth()->user()) {!! __('messages.new__password')!!} @else {!! __('messages.auth.password__word')!!} <span
                     class="required"> *</span> @endif </label>
             <div class="@error('password')is-invalid @enderror password">
                 <div id="container-checkpass" class="container-checkpass">
-                    <label for="checkPass" class="hidden">Voir/masquer le mot de passe</label>
+                    <label for="checkPass" class="hidden">{!! __('messages.authsee__hide__password')!!}</label>
                     <input tabindex="1" type="checkbox" class="password--visibleToggle" id="checkPass" checked>
                     <div class="password--visibleToggle-eye password--visibleToggle-eye-register open">
-                        <img src="{{asset('svg/eye-open.svg')}}" alt="icone de yeux ouvert"/>
+                        <img src="{{asset('svg/eye-open.svg')}}" alt="{!! __('messages.auth.icon__alt__see__password__open')!!}"/>
                     </div>
                     <div class="password--visibleToggle-eye password--visibleToggle-eye-register close">
-                        <img src="{{asset('svg/eye-close.svg')}}" alt="icone de yeux fermé"/>
+                        <img src="{{asset('svg/eye-close.svg')}}" alt="{!! __('messages.auth.icon__alt__see__password__close')!!}"/>
                     </div>
                 </div>
 
@@ -46,21 +46,21 @@
             @enderror
             <ul role="list" class="list-password-required">
                 <li id="cara">
-                    <img src="{{asset('../svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                    <img src="{{asset('../svg/good.svg')}}" alt="{!! __('messages.good__answer')!!}">
                     <p role="listitem">
-                        <span>&bull;</span> 8 caractères
+                        <span>&bull;</span> {!! __('messages.auth.caractere__word')!!}
                     </p>
                 </li>
                 <li id="maj">
-                    <img src="{{asset('../svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                    <img src="{{asset('../svg/good.svg')}}" alt="{!! __('messages.good__answer')!!}">
                     <p role="listitem">
-                        <span>&bull;</span> 1 majuscule
+                        <span>&bull;</span> {!! __('messages.auth.maj__word')!!}
                     </p>
                 </li>
                 <li id="symbole">
-                    <img src="{{asset('../svg/good.svg')}}" alt="Icone d'un pictogramme v correct">
+                    <img src="{{asset('../svg/good.svg')}}" alt="{!! __('messages.good__answer')!!}">
                     <p role="listitem">
-                        <span>&bull;</span> 1 chiffre
+                        <span>&bull;</span> {!! __('messages.auth.chiffre__word')!!}
                     </p>
                 </li>
             </ul>
@@ -80,7 +80,7 @@
                                                       <polyline points="1 5 4 8 11 1"></polyline>
                                                     </svg>
                                                 </span>
-                <span> Je souhaite m'inscrire à la newsletter</span>
+                <span> {!! __('messages.sub__news__text')!!}</span>
             </label>
         </div>
         <div style="position: relative">
@@ -95,7 +95,7 @@
                                                     </svg>
                                                 </span>
                     <span>
-                                                   Je suis en accord avec les <a href="{{route('conditions')}}">conditions d’utilisations</a> et la <a href="{{route('policy')}}">politique de confidentialité</a> du site
+                                                   {!! __('messages.comform__text_one')!!} <a href="{{route('conditions')}}">{{strtolower(__('messages.conditions.title__conditions'))}}</a> {!! __('messages.ads.and__text')!!} <a href="{{route('policy')}}">{!! __('messages.ads.politic__text')!!}</a> {!! __('messages.of__website')!!}.
                                                 </span>
                 </label>
         </div>

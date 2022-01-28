@@ -18,7 +18,13 @@ class QuotaExpired
     public function handle(Request $request, Closure $next)
     {
         if (auth()->user()->plan_user_id === 1 && auth()->user()->announcements->count() >=2 || auth()->user()->plan_user_id === 2 && auth()->user()->announcements->count() >=5 || auth()->user()->plan_user_id === 3 && auth()->user()->announcements->count() >=15){
-            Session::flash('quotaExpired','Votre quota d\'annonces est dépasser');
+            if (Session::get('applocale') === 'en') {
+                Session::flash('quotaExpired','Your quota of ads is exceeded');
+            } elseif (Session::get('applocale') === 'nl') {
+                Session::flash('quotaExpired','Uw advertentie quota is overschreden');
+            } else {
+                Session::flash('quotaExpired','Votre quota d\'annonces est dépasser');
+            }
             return redirect(route('dashboard.ads'));
         }
         return $next($request);
